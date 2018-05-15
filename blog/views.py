@@ -10,4 +10,4 @@ def post_list(request):
     context_dict = {
         'posts': posts
     }
-    return render(request, 'blog\post_list.html', context=context_dict)
+    return render(request, 'blog/post_list.html', context=context_dict)
