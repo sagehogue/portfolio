@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vistelse</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+          integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+<div id="pageWrapper">
+    {% block header %}
+    {% endblock %}
+    {% block nav %}
+        <div id="topNav">
+            <span id="menuToggle" class="fas fa-arrow-right"></span>
+            {#                    <i class="fas fa-bars fa-lg"></i>#}
+            <a href="{% url 'game_page' %}" class="nav-item">Game</a>
+            <a href="">Dummy</a>
+            <a href="{% url 'post_list' %}" class="nav-item">Musings</a>
+            <a href="https://github.com/sagehogue" class="nav-item">Github</a>
+        </div>
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+    {% block script %}
+    {% endblock %}
+</div>
+</body>
+</html>

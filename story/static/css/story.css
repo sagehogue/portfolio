@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/*Animation idea: structure page like natours site and have all divs
+with content slide onto the screen from alternating directions
+at a regular interval.*/
+
+body {
+    background-color: lightseagreen;
+    padding: 30px;
+}
+
+header h1 {
+    color: rgba(135, 206, 250, 0.6);
+}
+
+
+/*Ultimately I think I want a gradient to drain color from the
+header image with a greyish background for the ghost button.*/
+body header {
+    height: 80vh;
+    background-image: linear-gradient(
+            to right bottom,
+            rgba(33, 39, 153, 0.5),
+            rgba(76, 72, 128, 0.5)),
+    url("../img/img1.jpg");
+    /*-webkit-clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);*/
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+    background-size: cover;
+    background-position: top;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body header h1, body header h2, body header h3 {
+    font-family: 'Lobster', cursive;
+    font-size: 3em;
+}
+
+body header h1 a, body header h2 a, body header h3 a {
+    text-decoration-line: none;
+}
+
+/*# sourceMappingURL=story.css.map */

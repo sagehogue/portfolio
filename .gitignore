@@ -6,3 +6,9 @@ db.sqlite3
 /static
 .DS_Store
 .idea
+node_modules
+blog/static/css/.sass-cache/
+blog/static/css/blog.css.map
+blog/static/img/
+package-lock.json
+package.json

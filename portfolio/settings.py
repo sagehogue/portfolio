@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'angryDice.apps.AngrydiceConfig',
     'blog.apps.BlogConfig',
+    'story',
+
 ]
 
 MIDDLEWARE = [

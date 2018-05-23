@@ -1,0 +1,46 @@
+{% extends 'story/base.html' %}
+{% load staticfiles %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/splash_page.css' %}">{% endblock %}
+{% block header %}
+    <header>
+        <h1>
+            <span class="sub-span">Welcome to</span>
+            <br>
+            <span class="main-span">The Sage Page</span>
+        </h1>
+        <hr>
+    </header>
+{% endblock %}
+{% block nav %}
+{% endblock %}
+{% block content %}
+    <div id="contentWrapper">
+        <div class="imgBox">
+{#            <div class="img1 splash-img"></div>#}
+{#            <div class="img2 splash-img"></div>#}
+        </div>
+        <div id="bottomNav">
+            <a href='{% url 'post_list' %}'>
+                <div class="ghost-left ghost-button">
+                    Blog
+                </div>
+            </a>
+            <a href="{% url 'game_page' %}">
+                <div class="ghost-mid ghost-button">
+                    Vistelse
+                </div>
+            </a>
+            <a href="#">
+                <div class="ghost-right ghost-button">
+                    About
+                </div>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="../../static/js/anime.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../../static/js/splash_page.js"></script>
+{% endblock %}
