@@ -1,7 +1,15 @@
 {% extends 'story/base.html' %}
-{% load staticfiles %}
+{% block styles %} {% endblock %}
+{% block header %} {% endblock %}
+{% block nav %} {% endblock %}
 {% block content %}
     <div id="storyWrapper">
 
     </div>
+{% endblock %}
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../../static/js/anime.min.js"></script>
+    <script src="../../static/js/getCookie.js"></script>
+    <script src="../../static/js/story_page.js"></script>
 {% endblock %}
