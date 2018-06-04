@@ -1,10 +1,28 @@
 {% extends 'story/base.html' %}
-{% block styles %} {% endblock %}
+{% load staticfiles %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/story_page.css' %}">{% endblock %}
 {% block header %} {% endblock %}
 {% block nav %} {% endblock %}
 {% block content %}
     <div id="storyWrapper">
-
+        <div id="textBox">
+            <p>Select your experience</p>
+        </div>
+        <div id="mainAnimBox">
+            <hr>
+        </div>
+        <div id="selectionBox">
+            <div id="storyButtonBox">
+                <button type="button" class="storySelector" id="Vistelse">Vistelse</button>
+                <button type="button" class="storySelector" id="Dummy Story">Dummy Story</button>
+            </div>
+            <div id="optionBox">
+                <button type="button" id="option1" class="optionSelector button"></button>
+                <button type="button" id="option2" class="optionSelector button"></button>
+                <button type="button" id="option3" class="optionSelector button"></button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block script %}
@@ -13,3 +31,7 @@
     <script src="../../static/js/getCookie.js"></script>
     <script src="../../static/js/story_page.js"></script>
 {% endblock %}
+{#Chris says I want to have a wrapper around all the areas that I want to set#}
+{#To display: none because if I don't, they won't be rendered at all and the#}
+{#space will not be preserved, causing weird side effects when changing display#}
+{#states.#}

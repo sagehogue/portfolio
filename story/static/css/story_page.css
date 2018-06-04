@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: black;
+    font-family: 'Lobster', cursive;
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+}
+
+#storyWrapper {
+    overflow: hidden;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    color: lightseagreen;
+    border: #7f7f7f inset medium;
+    display: grid;
+    grid-template-rows: 2fr 4fr 1fr;
+    grid-template-columns: repeat(8, 1fr);
+    min-width: 100%
+    /*box-shadow: 5px 10px */
+}
+
+#textBox {
+    box-sizing: content-box;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    text-align: center;
+    word-wrap: break-spaces;
+    overflow: auto;
+    width: 100%;
+    padding-right: 20px;
+}
+
+hr {
+    background-color: inherit;
+    border-color: lightslategray;
+}
+
+#mainAnimBox {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+}
+
+#selectionBox {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ghost-button {
+    margin-bottom: 10px;
+    opacity: 1;
+    font-size: .8em;
+    display: inline-block;
+    width: 100px;
+    padding: 8px;
+    color: #305252;
+    background-color: transparent;
+    border: 1px solid #305252;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.ghost-button::after {
+    content: "";
+    border-radius: 5px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+#optionBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#storyButtonBox {
+    display: flex;
+    justify-content: space-around;
+    min-width: 40%;
+}
+
+#storyButtonBox > button {
+    background: transparent;
+    border: lightslategray outset medium;
+    color: lightslategray;
+    padding: 7px 14px;
+}
+
+.ghost-button:hover {
+    -webkit-transform: scale(1.1, 1.1);
+    transform: translateY(5px) scale(1.1, 1.1)
+}
+
+.ghost-button:hover::after {
+    opacity: 1;
+}
+.optionSelector {
+    display: none;
+}
