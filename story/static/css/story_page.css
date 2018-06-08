@@ -8,8 +8,8 @@ body {
     background: black;
     font-family: 'Lobster', cursive;
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr;
-    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-columns: 1fr 9fr 1fr;
+    grid-template-rows: 1fr 9fr 1fr;
 }
 
 #storyWrapper {
@@ -52,6 +52,7 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .ghost-button {
@@ -89,11 +90,12 @@ hr {
 }
 
 #optionBox {
-    display: flex;
+    /*display: flex;*/
+    display: none;
     align-items: center;
     justify-content: space-around;
     overflow: hidden;
-    padding-right: 20px;
+    height: inherit;
 }
 
 #storyButtonBox {

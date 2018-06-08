@@ -39,9 +39,10 @@ def story_api(request):
             return_scene_id = Option.objects.filter(option_label=option_context).values(
                 'next_scene_id')[0]['next_scene_id']
             return_qset = Scene.objects.filter(id=return_scene_id).values(
-                'label', 'scene_text')
+                'label', 'scene_text', 'intra_order')
             return_scene_text = return_qset[0]['scene_text']
             return_scene_label = return_qset[0]['label']
+            return_scene_position = return_qset[0]['intra_order']
             option_num = 0
             relevant_options = {}
             for i in Option.objects.filter(associated_scene_id=return_scene_id).values(
@@ -52,7 +53,8 @@ def story_api(request):
                 'scene': f'{return_scene_label}',
                 'sceneText': f'{return_scene_text}',
                 'options': relevant_options,
-                'optionQuantity': option_num
+                'optionQuantity': option_num,
+                'intra': return_scene_position
             }
             response.append({'context': return_context})
         return JsonResponse(response, safe=False)

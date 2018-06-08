@@ -24,6 +24,9 @@ function spanify(textTarget, textStr, spanClass = 'word') { // textTarget must b
 // PRE LUNCH GOAL SETTING::::::::::
 // Need to make functions sufficiently modular and standardized in execution that they can be called during any selection context
 // Refactor click listeners into one single click handler.!@!3123!@
+
+// utilizing AJAX within promises would be glorious as it would allow me to easily maintain order.
+// AJAX.then(transition).then(buttonappear)
 function trigger(response) {
     const currentContext = response[0]['context'];
     const optionCount = parseInt(currentContext.optionQuantity);
