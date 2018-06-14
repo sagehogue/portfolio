@@ -1,6 +1,5 @@
 let newText = '';
 
-// Current Task: Create an end of story display and a way to connect to it logically.
 function initialize() {
     let buttonSwitch = document.querySelector('.storySelector');
     buttonSwitch.disabled = true;
@@ -113,7 +112,7 @@ function buttonUpdate(opaque = false) {
     const intra = localStorage.getItem('intra');
     let ourSuperLazyCounter = 0;
     try {
-        if (parseInt(intra) === 1000 && typeof divOptions['1']['option_text'] === 'undefined') {
+        if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
             throw 'Reached end of scene chain';
         }
         if (opaque === false) {
@@ -244,6 +243,7 @@ $('#selectionBox').click(e => {
         e.stopPropagation();
         const selectedStory = e.target.innerText;
         // const storyID = '#' + e.target.id;
+        // this promise constructor seems to be nonfunctional - figure out what is wrong
         let storyButtonAnim = new Promise((res, rej) => {
             // Well the sequencing is more fluid but these animations still aren't rendering
             anime({
@@ -297,9 +297,13 @@ $('#selectionBox').click(e => {
             })
             .then(() => {
                 let opacity;
-                if ($('#option1').css('opacity') == 1) {
+                console.log($('#option1').attr('opacity'));
+                console.log(document.querySelector('#option1').style.opacity);
+                if (document.querySelector('#option1').style.opacity >= .8) {
+                    console.log('opaque!');
                     opacity = true
                 }
+                console.log(opacity);
                 buttonUpdate(opacity)
             });
     }
