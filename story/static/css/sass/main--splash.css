@@ -1,0 +1,114 @@
+html {
+  font-size: 62.5%; }
+
+* {
+  box-sizing: border-box;
+  margin: 0; }
+
+body {
+  padding: 3rem;
+  background-color: #CAC4CE; }
+
+.heading-main {
+  color: #725AC1;
+  text-transform: uppercase;
+  backface-visibility: hidden;
+  text-align: center;
+  position: relative; }
+  .heading-main--sub {
+    font-size: 2.5rem;
+    position: absolute;
+    margin: 0 auto;
+    top: -1.75rem;
+    animation-name: moveInLeft;
+    animation-duration: .8s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: backwards;
+    z-index: 1; }
+  .heading-main--main {
+    display: inline-block;
+    font-size: 6rem;
+    z-index: 5;
+    animation: fadeInVertWiggle 1.5s ease-in-out;
+    animation-delay: .9s;
+    animation-fill-mode: backwards; }
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem); }
+  80% {
+    transform: translateX(1rem) skewX(30deg); }
+  100% {
+    opacity: 1;
+    transform: translate(0) skewX(0); } }
+@keyframes fadeInSimple {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@keyframes fadeInVertWiggle {
+  0% {
+    opacity: 0; }
+  30% {
+    transform: translateY(0); }
+  35% {
+    opacity: 1; }
+  55% {
+    transform: translateY(-1rem); }
+  85% {
+    transform: translateY(0.5rem); }
+  100% {
+    transform: translateY(0); } }
+.header {
+  height: 80vh; }
+
+/* Okay so current goal is to actually make some interesting buttons
+Using different state effects. :after, :activate, :visited etc
+Once the button is fleshed out in that capacity we can worry about
+actually positioning them and making a coherent page out of it*/
+/* This is a button I pulled off the net. Make your own! Gotta learn!
+.ghost-mid, .ghost-left, .ghost-right {*/
+/*display: inline-block;*/
+/*width: 200px;*/
+/*padding: 8px;*/
+/*color: #305252;*/
+/*background-color: transparent;*/
+/*border: 1px solid #305252;*/
+/*text-align: center;*/
+/*outline: none;*/
+/*text-decoration: none;*/
+/*}*/
+/*.ghost-button {*/
+/*border-radius: 5px;*/
+/*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);*/
+/*-webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+/*transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+/*}*/
+/*.ghost-button::after {*/
+/*content: "";*/
+/*border-radius: 5px;*/
+/*position: absolute;*/
+/*z-index: -1;*/
+/*top: 0;*/
+/*left: 0;*/
+/*width: 100%;*/
+/*height: 100%;*/
+/*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);*/
+/*opacity: 0;*/
+/*-webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+/*transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+/*}*/
+/*.ghost-button:hover {*/
+/*-webkit-transform: scale(1.25, 1.25);*/
+/*transform: translateY(20px) scale(1.25, 1.25)*/
+/*}*/
+/*.ghost-button:hover::after {*/
+/*opacity: 1;*/
+/*}*/
+/*.ghost-button > a {*/
+/*font-family: 'Lobster', cursive;*/
+/*font-size: 1.5em;*/
+/*}*/
+
+/*# sourceMappingURL=main--splash.css.map */

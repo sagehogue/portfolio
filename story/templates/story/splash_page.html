@@ -1,15 +1,19 @@
+{# Current Status : Completed page load header anims #}
+{# TODOS #}
+{# Complete header #}
+{# Create natours style cards for about me and navigation #}
 {% extends 'story/base.html' %}
 {% load staticfiles %}
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'css/splash_page.css' %}">{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/sass/main--splash.css' %}">{% endblock %}
 {% block header %}
-    <header>
-        <h1>
-            <span class="sub-span">Welcome to</span>
-            <br>
-            <span class="main-span">The Sage Page</span>
-        </h1>
-        <hr>
+    <header class="header">
+        <div class="heading__box">
+            <h1 class="heading-main">
+                <span class="heading-main--sub">Welcome to the</span>
+                <span class="heading-main--main">Sage Page</span>
+            </h1>
+        </div>
     </header>
 {% endblock %}
 {% block nav %}
@@ -17,25 +21,25 @@
 {% block content %}
     <div id="contentWrapper">
         <div class="imgBox">
-{#            <div class="img1 splash-img"></div>#}
-{#            <div class="img2 splash-img"></div>#}
+            {#            <div class="img1 splash-img"></div>#}
+            {#            <div class="img2 splash-img"></div>#}
         </div>
         <div id="bottomNav">
-            <a href='{% url 'post_list' %}'>
-                <div class="ghost-left ghost-button">
+            <a href='{% url 'post_list' %}' class="a-btn">
+                <div class="btn btn-nav">
                     Blog
                 </div>
             </a>
-            <a href="{% url 'game_page' %}">
-                <div class="ghost-mid ghost-button">
+            <a href="{% url 'game_page' %}" class="a-btn">
+                <div class="btn btn-nav">
                     Vistelse
                 </div>
             </a>
-            <a href="#">
-                <div class="ghost-right ghost-button">
-                    About
-                </div>
-            </a>
+            {#            <a href="#">#}
+            {#                <div class="btn">#}
+            {#                    About#}
+            {#                </div>#}
+            {#            </a> currently no about page...#}
         </div>
     </div>
 {% endblock %}
@@ -44,5 +48,5 @@
     <script src="../../static/js/getCookie.js"></script>
     <script src="../../static/js/anime.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../static/js/splash_page.js"></script>
+    {#    <script src="../../static/js/splash_page.js"></script>#}
 {% endblock %}

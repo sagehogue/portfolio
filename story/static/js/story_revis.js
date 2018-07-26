@@ -54,7 +54,6 @@ function doSomeAJAX(selected, selectedStory = false, prev_scene = false) {
 }
 
 function fadeTimer(spanClass) {
-    // May need to play around with these values.
     const words = $($(spanClass).get().reverse());
     speed = 500;
     duration = 500;
