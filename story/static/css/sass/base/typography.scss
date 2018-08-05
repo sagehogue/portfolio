@@ -1,19 +1,28 @@
+.heading__box {
+  padding-top: 20vh;
+}
+
 .heading-main {
   color: $color-typo-1;
   text-transform: uppercase;
   backface-visibility: hidden;
   text-align: center;
   position: relative;
+  transform: translateY(50%);
+  font-family: $font-header;
   &--sub {
     font-size: 2.5rem;
     position: absolute;
     margin: 0 auto;
-    top: -1.75rem;
+    top: -2.75rem;
     animation-name: moveInLeft;
     animation-duration: .8s;
     animation-timing-function: ease-out;
     animation-fill-mode: backwards;
     z-index: 1;
+    font-weight: 400;
+    text-decoration: $color-typo-1;
+    text-decoration-line: underline;
   }
   &--main {
     display: inline-block;
@@ -22,5 +31,19 @@
     animation: fadeInVertWiggle 1.5s ease-in-out;
     animation-delay: .9s;
     animation-fill-mode: backwards;
+    font-weight: 700;
+  }
+}
+
+.text {
+
+  &__opaque {
+
+  }
+  &__outline {
+    text-shadow: -1px -1px 0 $color-white,
+    1px -1px 0 $color-white,
+    -1px 1px 0 $color-white,
+    1px 1px 0 $color-white;
   }
 }

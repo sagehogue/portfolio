@@ -1,14 +1,22 @@
 @keyframes moveInLeft {
   0% {
     opacity: 0;
+    text-decoration: none;
     transform: translateX(-10rem);
   }
   80% {
     transform: translateX(1rem) skewX(30deg);
   }
+
+  90% {
+    text-decoration: none;
+    text-decoration: transparent;
+  }
   100% {
     opacity: 1;
     transform: translate(0) skewX(0);
+    text-decoration: $color-typo-1;
+    text-decoration-line: underline;
   }
 }
 
@@ -32,10 +40,10 @@
     opacity: 1;
   }
   55% {
-    transform: translateY(-1rem);
+    transform: translateY(-.75rem);
   }
-  85% {
-    transform: translateY(.5rem);
+  90% {
+    transform: translateY(.4rem);
   }
   100% {
     transform: translateY(0);
