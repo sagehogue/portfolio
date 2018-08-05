@@ -1,5 +1,6 @@
 .menu {
   font-size: 2rem;
+  font-weight: 900;
   position: relative;
   display: block;
   text-align: center;
@@ -45,27 +46,57 @@
       height: 60%;
       border-bottom: none;
     }
+
+  }
+  &__nav {
+    width: 75%;
+    left: 12.5%;
+    height: 60%;
+    top: 1.5rem;
+    border-top: none;
+    display: flex;
+    justify-content: space-around;
+  }
+  &__link {
+    display: inline-block;
   }
   &:hover,
   &__btn:hover {
-    .menu__btn {
-      overflow: hidden;
-      z-index: -1;
-      &--left {
-        transform: translateX(-99%);
+    .menu {
+      &__btn {
+        z-index: -1;
+        &--left {
+          transform: translateX(-99%);
+          color: $color-primary-dark;
+          border-color: $color-primary-light;
+        }
+        &--right {
+          transform: translateX(29rem);
+          color: $color-primary-dark;
+          border-color: $color-primary-light;
+        }
+        &--top {
+          transform: translateY(-99%);
+          color: $color-primary-dark;
+          border-color: $color-primary-light;
+        }
+      }
+      &__nav {
+        transform: translateY(99%);
         color: $color-primary-dark;
         border-color: $color-primary-light;
       }
-      &--right {
-        transform: translateX(29rem);
-        color: $color-primary-dark;
-        border-color: $color-primary-light;
-      }
-      &--top {
-        transform: translateY(-99%);
-        color: $color-primary-dark;
-        border-color: $color-primary-light;
+      &__link {
+        &--media-icon {
+          color: $color-grey-dark;
+        }
       }
     }
   }
+}
+
+.menu__link--media-icon {
+  color: transparent;
+  width: 200%;
+  height: 200%;
 }
