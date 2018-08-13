@@ -10,9 +10,11 @@
 {# possibly featuring buttons to other pages #}
 {% extends 'story/base.html' %}
 {% load staticfiles %}
+{% block head_additions %}<title>Sage Page</title>{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/sass/main--splash.css' %}">{% endblock %}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 {% block header %}
     <header class="header">
         <div class="heading__box">
@@ -33,11 +35,16 @@
                 Nowherelink
             </a>
             <nav class="menu__btn menu__nav">
-                <a target = "_blank" href="https://github.com/sagehogue" class="menu__link"><i class="fab fa-github-square menu__link--media-icon"></i></a>
-                <a target = "_blank" href="https://www.linkedin.com/in/sage-hogue-0431a7146/" class="menu__link"><i class="fab fa-linkedin menu__link--media-icon"></i></a>
-                <a target = "_blank" href="https://stackoverflow.com/users/9855918/sage-hogue?tab=profile" class="menu__link"><i class="fab fa-stack-overflow menu__link--media-icon"></i></a>
-                <a target = "_blank" href="https://twitter.com/sagemph" class="menu__link"><i class="fab fa-twitter menu__link--media-icon"></i></a>
-                <a href="mailto:sagehogue@gmail.com" class="menu__link menu__link--email"><i class="far fa-envelope menu__link--media-icon"></i></a>
+                <a target="_blank" href="https://github.com/sagehogue" class="menu__link"><i
+                        class="fab fa-github-square menu__link--media-icon"></i></a>
+                <a target="_blank" href="https://www.linkedin.com/in/sage-hogue-0431a7146/" class="menu__link"><i
+                        class="fab fa-linkedin menu__link--media-icon"></i></a>
+                <a target="_blank" href="https://stackoverflow.com/users/9855918/sage-hogue?tab=profile"
+                   class="menu__link"><i class="fab fa-stack-overflow menu__link--media-icon"></i></a>
+                <a target="_blank" href="https://twitter.com/sagemph" class="menu__link"><i
+                        class="fab fa-twitter menu__link--media-icon"></i></a>
+                <a href="mailto:sagehogue@gmail.com" class="menu__link menu__link--email"><i
+                        class="far fa-envelope menu__link--media-icon"></i></a>
             </nav>
         </div>
     </header>
@@ -59,8 +66,8 @@
 {% endblock %}
 {% block script %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../static/js/getCookie.js"></script>
+    <script src="../../static/js/story_page/getCookie.js"></script>
     <script src="../../static/js/anime.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="../../static/js/main.js"></script>
+    <script src="../../static/js/main.js"></script>
 {% endblock %}

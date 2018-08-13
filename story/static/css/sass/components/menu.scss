@@ -33,12 +33,14 @@
       height: 80%;
       border-right: none;
       top: 10%;
+      //left: 3rem;
     }
     &--right {
       width: 35%;
       height: 80%;
       border-left: none;
       top: 10%;
+      left: 61.5%; // 18rem looks good but convert to percent
     }
     &--top {
       width: 75%;
@@ -52,7 +54,7 @@
     width: 75%;
     left: 12.5%;
     height: 60%;
-    top: 1.5rem;
+    top: 40%;
     border-top: none;
     display: flex;
     justify-content: space-around;
@@ -71,7 +73,7 @@
           border-color: $color-primary-light;
         }
         &--right {
-          transform: translateX(29rem);
+          transform: translateX(11rem);
           color: $color-primary-dark;
           border-color: $color-primary-light;
         }
@@ -100,3 +102,14 @@
   width: 200%;
   height: 200%;
 }
+
+//@media screen and (max-width: 800px) {
+//  .menu {
+//    font-size: 8rem;
+//    width: 40rem;
+//    height: 10rem;
+//    &__button {
+//      font-size: 5rem;
+//    }
+//  }
+//}

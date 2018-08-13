@@ -117,7 +117,8 @@ body {
       width: 35%;
       height: 80%;
       border-left: none;
-      top: 10%; }
+      top: 10%;
+      left: 61.5%; }
     .menu__btn--top {
       width: 75%;
       left: 12.5%;
@@ -127,7 +128,7 @@ body {
     width: 75%;
     left: 12.5%;
     height: 60%;
-    top: 1.5rem;
+    top: 40%;
     border-top: none;
     display: flex;
     justify-content: space-around; }
@@ -140,7 +141,7 @@ body {
       color: #28b485;
       border-color: #7ed56f; }
     .menu:hover .menu__btn--right, .menu__btn:hover .menu__btn--right {
-      transform: translateX(29rem);
+      transform: translateX(11rem);
       color: #28b485;
       border-color: #7ed56f; }
     .menu:hover .menu__btn--top, .menu__btn:hover .menu__btn--top {
