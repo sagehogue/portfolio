@@ -1,24 +1,30 @@
+// TODOS
+// #1: Fix alignment issue after story selection.
+// #2: Fix animation flow issues.
+
 let newText = '';
 
 function initialize() {
     let buttonSwitch = document.querySelector('.storySelector');
     buttonSwitch.disabled = true;
-    const callMe = function () {
+    const init_animation = function () {
         anime({
             targets: '.storySelector',
             opacity: 1,
-            duration: 1500
+            duration: 1500,
+            complete: function () {
+                buttonSwitch.disabled = false;
+            }
         });
-        setTimeout(() => {
-            buttonSwitch.disabled = false;
-        }, 1600)
     };
     spanTarget = $('#storyWelcome');
     spanify(spanTarget, spanTarget.text());
-    textFadeIn('.word', callMe);
-
+    textFadeIn('.word', init_animation);
 }
 
+// the argument called selected declares the ID of the option or story selected by the user.
+// the argument selectedStory is used in differentiating between story requests and option requests.
+// prev_scene is currently extraneous information.
 function doSomeAJAX(selected, selectedStory = false, prev_scene = false) {
     return new Promise((res, rej) => {
         if (selectedStory === false) {
@@ -28,31 +34,39 @@ function doSomeAJAX(selected, selectedStory = false, prev_scene = false) {
                 data: {
                     optionSelection: selected
                 }
+            }).done((data) => {
+
+                res(data)
+            }).fail((error) => {
+                rej(error)
             })
-                .done((data) => { // data being the ajax response - say .then and create a done function
-                    res(data)
-                })
-                .fail((error) => { // error is just the response - say .catch and create a done function? should know when error
-                    rej(error)
-                })
-        } else {
+
+        }
+        else {
             $.ajax({
                 url: '/story/api/',
                 type: 'GET',
                 data: {
                     storySelection: selected
+                },
+                complete: function () {
+                    transition('.word', true, true);
                 }
             })
-                .done((data) => { // data being the ajax response - say .then and create a done function
+                .done((data) => {
                     res(data)
+                    // I could probably put the transition logic in here - might make more sense to do that.
+                    // might help the animation flow.
                 })
-                .fail((error) => { // error is just the response - say .catch and create a done function? should know when error
+                .fail((error) => {
                     rej(error)
+                    // I should write an error handling function - perhaps some kind of animated display!
                 })
         }
     })
 }
 
+// spanClass must be valid selector string
 function fadeTimer(spanClass) {
     const words = $($(spanClass).get().reverse());
     speed = 500;
@@ -211,7 +225,7 @@ function spanify(textTarget, textStr, spanClass = 'word') {
 function endButtonAnim() {
     let normalizeOpacity = new Promise((res, rej) => {
         let animCount = 0;
-        $('.optionSelector').each(function() {
+        $('.optionSelector').each(function () {
             let elemOpacity = this.style.opacity;
             let that = this;
             if (elemOpacity !== 0) {
@@ -226,43 +240,40 @@ function endButtonAnim() {
         });
         res(animCount)
     });
-    normalizeOpacity.then((res) => {setTimeout((res)=> {
-        console.log('promise resolved - final button should appear');
-        $('#optionBox').append('<button id="final-button" style="opacity: 0" onclick="location.reload()" class="end-button button">Again?</button>');
-        buttonSwitch($('#final-button'))
-    }, 1000 * res)
+    normalizeOpacity.then((res) => {
+        setTimeout((res) => {
+            console.log('promise resolved - final button should appear');
+            $('#optionBox').append('<button id="final-button" style="opacity: 0" onclick="location.reload()" class="end-button button">Again?</button>');
+            buttonSwitch($('#final-button'))
+        }, 1000 * res)
     })
 }
 
 $('#selectionBox').click(e => {
-    if (e.target.style.opacity <= .8) {
-        e.stopPropagation();
-    }
-    else if (e.target.classList.contains('storySelector')) {
+    // this may be unnecessary - if I fix my callbacks I shouldn't need things like this
+    // if (e.target.style.opacity <= .8) {
+    //     e.stopPropagation();
+    // }
+    if (e.target.classList.contains('storySelector')) {
         e.stopPropagation();
         const selectedStory = e.target.innerText;
         // const storyID = '#' + e.target.id;
         // this promise constructor seems to be nonfunctional - figure out what is wrong
-        let storyButtonAnim = new Promise((res, rej) => {
-            // Well the sequencing is more fluid but these animations still aren't rendering
-            anime({
-                targets: '.storySelector',
-                // rotate: {value: 360, duration: 1000},
-                translateY: {
-                    value: '50vh',
-                    duration: 2000,
-                    easing: 'easeOutSine'
-                },
-            });
-            res()
-        });
-        storyButtonAnim.then(res => {
+        // let storyButtonAnim = new Promise((res, rej) => {
+        // Well the sequencing is more fluid but these animations still aren't rendering
+        anime({
+            targets: '.storySelector',
+            rotate: {value: 360, duration: 300},
+            translateY: {
+                value: '25vh',
+                duration: 700,
+                easing: 'easeOutSine',
+            },
+            complete: function () {
                 let promisedData = doSomeAJAX(selectedStory, true);
                 promisedData.then(response => {
-                    transition('.word', true, true);
                     const currentContext = response[0]['context'];
                     newText = currentContext.sceneText;
-
                     // $('#optionBox').css('min-width', '100%');
                     localStorage.setItem("story", currentContext.story_name);
                     localStorage.setItem("scene", currentContext.scene);
@@ -274,11 +285,9 @@ $('#selectionBox').click(e => {
                     let ourSuperLazyCounter = 0;
                     buttonUpdate();
                 })
-            }
-        )
-    }
-
-    else if (e.target.classList.contains('optionSelector')) {
+            },
+        })
+    } else if (e.target.classList.contains('optionSelector')) {
         const optionId = e.target.id;
         const divOptions = JSON.parse(localStorage.getItem('options'));
         const optionLabelLocator = e.target.id.slice(-1);
@@ -306,8 +315,9 @@ $('#selectionBox').click(e => {
                 buttonUpdate(opacity)
             });
     }
-})
-;
+});
+//     res()
+// });
 
 
 initialize();
