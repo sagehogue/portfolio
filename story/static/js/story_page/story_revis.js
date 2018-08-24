@@ -3,7 +3,15 @@
 // #2: Fix animation flow issues. DONE-ish
 // #3: Fix weird delay between word fadein and button appearance. Line ~150 has comments
 
-//CURRENT:::: Fix Callback problems
+
+// REVELATION: I seem to be operating from some false assumptions here. All these async techniques
+// don't provide flow automatically - if they have nothing to wait on, no server call or whatever,
+// they won't delay it. I think I need setTimeout functions and ways to calculate animation duration
+// (previously assumed it could be implicitly tracked but I don't think in my case that is so)
+// and stoof to sequence. async / await seems amazeballs as well.
+
+
+// Fix Callback problems
 // May need to do larger scale revisions... Perhaps post on a subreddit and get some advice. I don't entirely understand
 // What I am missing.
 // Sadly a lot of them are still not playing in sequence. It also may be calling too many animations
