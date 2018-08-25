@@ -11,11 +11,20 @@ def splash_page(request):
 def game_page(request):
     return render(request, 'story/game_page.html')
 
-
+# The first statement in the if chain handles something yet to be implemented --
+# In the initializing function on the page there will be a fetch request for the story names
+# They will then be rendered into the storySelector elements currently hardcoded in.
 def story_api(request):
     response = []
     if request.method == 'GET':
-        if request.GET.get('storySelection'):
+        if request.GET.get('fetchStories'):
+            story_queryset = Story.objects.all()
+            response = {'stories': {}}
+            counter = 1
+            for i in story_queryset:
+                response['stories'].update({str(counter): i.story_title})
+                counter += 1
+        elif request.GET.get('storySelection'):
             request_story = request.GET.get('storySelection')
             return_story = Story.objects.filter(story_title=f'{request_story}')
             relevant_scene = Scene.objects.filter(story_id=return_story[0].id, intra_order=1)

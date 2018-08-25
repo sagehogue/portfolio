@@ -1,7 +1,20 @@
 // TODOS
-// #1: Fix alignment issue after story selection. DONE
-// #2: Fix animation flow issues. DONE-ish
-// #3: Fix weird delay between word fadein and button appearance. Line ~150 has comments
+// #1: Rewrite functions with async and more comprehensible promise logic
+// #2: Reorder code to run with new functions
+// #3: Create a function to dynamically generate new HTML for the story selector buttons and remove the hardcoding.
+
+// COMPLETE MAIN FUNCTIONS
+// #1: async function fadeTextIn
+// #2: async function fadeTextOut
+// #3: async function callAPI <---------- NEEDS ERROR HANDLING
+// #4: function updateOptionButtontext <---------- error handling needed
+
+// COMPLETE SPECIFIC FUNCTIONS
+// #1: function animValueCalc
+// #2: function fixAlign
+// #3: function switchToOptionBox
+// #4: function spanify
+// #5: async function buttonSwitchAll
 
 
 // REVELATION: I seem to be operating from some false assumptions here. All these async techniques
@@ -18,12 +31,146 @@
 // Sadly a lot of them are still not playing in sequence. It also may be calling too many animations
 // Could attach some console.logs and see how many times it calls opacity controls?
 
+async function fadeTextIn(spanSelector = '.word') {
+    const words = $($(spanSelector).get());
+    const vals = await animValueCalc(spanSelector);
+    const delay = vals[0], duration = vals[1];
+    words.each(function (index) {
+        $(this).delay(index * delay).animate({'opacity': 1}, duration);
+        let elem = document.querySelector('#textBox');
+        elem.scrollTop = elem.scrollHeight;
+    });
+}
 
-// Current best guess: I'll have to add the buttonSwitchAll into the callback series. Maybe .bind() comes in play?
+async function fadeTextOut(spanSelector = '.word') {
+    const words = $($(spanSelector).get().reverse());
+    const vals = animValueCalc(jQTextClass);
+    const speed = vals[0], animDuration = vals[1], totalDuration = vals[2];
+    words.each(function (index) {
+        let fadeOutDelay = index * speed;
+        if (index === words.length - 1) {
+            timer = animDuration + (speed * words.length);
+            $(this).delay(fadeOutDelay).animate({'opacity': 0}, animDuration, function () {
+            });
+        }
+    });
+    // Timeout for entire duration of this animation -- should make sure that the .delay() function doesn't block
+    // or this will probably screw me up
+    setTimeout(() => {
+        res()
+    }, totalDuration)
+}
+
+async function callAPI(userSelection, requestAllStories = false, requestSelectedStory = false) {
+    if (requestAllStories) {
+        // Code to retrieve list of story names to use for my HTML buttons
+        (console.log('fetching stories...'));
+        return fetch('/story/api/', {fetchStories: requestAllStories})
+    }
+    else {
+        if (requestSelectedStory) {
+            // Call API with request for first story scene information
+            response = fetch('/story/api/', {storySelection: userSelection})
+        }
+        else {
+            // Call API (send selected option) with request for next scene information
+            return fetch('/story/api/', {optionSelection: userSelection})
+        }
+    }
+}
+
+function animValueCalc(spanClass) {
+    const words = $($(spanClass).get().reverse());
+    speed = 400;
+    animDuration = 400;
+    if (words.length >= 5 && words.length < 25) {
+        speed -= 300;
+        animDuration -= 150
+    }
+    else if (words.length >= 25 && words.length < 50) {
+        speed -= 350;
+        animDuration -= 250
+    }
+    else if (words.length >= 50) {
+        speed -= 400;
+        animDuration -= 350
+    }
+    const totalDuration = (words.length * speed) + animDuration;
+    console.log(totalDuration);
+    return [speed, animDuration, totalDuration]
+}
+
+function alignFix() {
+    $('#textBox').css('text-align', 'left')
+}
+
+function switchToOptionBox() {
+    $('#storyButtonBox').css('display', 'none');
+    $('#optionBox').css('display', 'flex');
+}
+
+function spanify(textTarget, textStr, spanClass = 'word') {
+    let timeoutDuration = 0;
+    let spanifySuccessMessage = `Spanify promise resolved after ${timeoutDuration}ms`;
+    return new Promise(function (res, rej) {
+        $(`.${spanClass}`).css('opacity', 0);
+        const splitText = textStr.split(' ');
+        textTarget.empty();
+        for (i in splitText) {
+            textTarget.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
+        }
+        res(spanifySuccessMessage);
+    })
+}
+
+async function asyncButtonSwitchAll(buttonType='.optionSelector', duration = 1500) {
+    let buttonContainer = '#optionBox';
+    if (buttonType==='storySelector') {buttonContainer = '#storyButtonBox'}
+    $(buttonContainer).find('.button').each(function () {
+        if (this.innerText) {
+            buttonSwitch($(this), duration);
+        }
+    });
+}
+
+async function buttonSwitchAll(duration = 1500) {
+    $('#optionBox').find('.button').each(function () {
+        if (this.innerText) {
+            // let that = $(this);
+            buttonSwitch($(this), duration);
+        }
+    });
+}
 
 let newText = '';
 
-function initialize() {
+async function initialize() {
+    // Later I should rewrite this so that it completely resets the state of the page. That'd allow for an again button
+    // to be smoothly executed and require no page reload.
+    let buttonState = document.querySelector('.storySelector');
+    buttonState.disabled = true;
+    const elToAnimate = $('#storyWelcome');
+    spanify(elToAnimate, elToAnimate.text());
+    fadeTextIn();
+    const init_animation = () => {
+        anime({
+            targets: '.storySelector',
+            opacity: 1,
+            duration: 1500,
+            complete: function () {
+                buttonState.disabled = false;
+            }
+        });
+    };
+    callAPI('No Selection', true).then(res => {
+        updateOptionButtonText();
+        return asyncButtonSwitchAll('.storySelector');
+    }).then(res => {
+
+    })
+}
+
+function initialize_old() {
     let buttonState = document.querySelector('.storySelector');
     buttonState.disabled = true;
     const init_animation = () => {
@@ -44,6 +191,8 @@ function initialize() {
 // the argument called selected declares the ID of the option or story selected by the user.
 // the argument selectedStory is used in differentiating between story requests and option requests.
 // prev_scene is currently extraneous information.
+
+
 function doSomeAJAX(selected, selectedStory = false, prev_scene = false, buttonFadeOutDuration = 500) {
     return new Promise((res, rej) => {
         if (selectedStory === false) {
@@ -84,59 +233,6 @@ function doSomeAJAX(selected, selectedStory = false, prev_scene = false, buttonF
     })
 }
 
-// spanClass must be valid selector string
-function animValueCalc(spanClass) {
-    const words = $($(spanClass).get().reverse());
-    speed = 400;
-    animDuration = 400;
-    if (words.length >= 5 && words.length < 25) {
-        speed -= 300;
-        animDuration -= 150
-    }
-    else if (words.length >= 25 && words.length < 50) {
-        speed -= 350;
-        animDuration -= 250
-    }
-    else if (words.length >= 50) {
-        speed -= 400;
-        animDuration -= 350
-    }
-    const totalDuration = (words.length * speed) + animDuration;
-    console.log(totalDuration);
-    return [speed, animDuration, totalDuration]
-}
-
-async function fadeTextOut(spanSelector = '.word') {
-    const words = $($(jQTextClass).get().reverse());
-    const vals = animValueCalc(jQTextClass);
-    const speed = vals[0], animDuration = vals[1], totalDuration = vals[2];
-    words.each(function (index) {
-        let fadeOutDelay = index * speed;
-        if (index === words.length - 1) {
-            timer = animDuration + (speed * words.length);
-            $(this).delay(fadeOutDelay).animate({'opacity': 0}, animDuration, function () {
-            });
-        }
-    });
-    // Timeout for entire duration of this animation -- should make sure that the .delay() function doesn't block
-    // or this will probably screw me up
-    setTimeout(() => {
-        res()
-    }, totalDuration)
-}
-
-function alignFix() {
-    $('#textBox').css('text-align', 'left')
-}
-
-function switchToOptionBox() {
-    $('#storyButtonBox').css('display', 'none');
-    $('#optionBox').css('display', 'flex');
-}
-
-// Split this into an animating function and a utility function to fix the alignment and transition the storybox.
-// More modular code will be more maintainable.
-
 function textFadeOut(jQTextClass = '.word', callback = 0, transition = false, fixAlign = false, killStoryBox = false) {
     const words = $($(jQTextClass).get().reverse());
     let wordCount = words.length;
@@ -172,6 +268,25 @@ function textFadeOut(jQTextClass = '.word', callback = 0, transition = false, fi
     if (fixAlign) {
         setTimeout(() => $('#textBox').css('text-align', 'left'), timer);
     }
+}
+
+function updateOptionButtonText() {
+    const currentContext = JSON.parse(localStorage.getItem('currentContext')),
+        optionCount = parseInt(currentContext.optionQuantity),
+        newSceneOptions = JSON.parse(localStorage.getItem('options')), intra = localStorage.getItem('intra');
+    let counter = 0;
+    // Looping through buttons and injecting
+    $('#optionBox').find('.button').each(function (index) {
+        if (counter >= optionCount) {
+            return false // I think this is to exit the function early if there is no more text to inject?
+        }
+        let focus = String(index + 1);
+        this.innerText = (newSceneOptions[focus]["option_text"]);
+        counter++;
+        if (this.innerText) {
+            $(this).css('display', 'inline');
+        }
+    },);
 }
 
 function buttonUpdate(opaque = false) {
@@ -221,11 +336,6 @@ function buttonUpdate(opaque = false) {
 }
 
 function buttonSwitch(jQSel, buttonAnimDuration = 1500) {
-
-    // maybe I need promises in here. perhaps each one should return a promise to guarantee opacity?
-    // I'm not sure. Perhaps it's still opacity issues causing the program to
-    // curious. This function never runs when the buttons fail to animate.
-    // perhaps it isn't being called for some reason?
     targetID = '#' + jQSel.attr('id');
     let buttonState = document.querySelector(targetID);
     if (jQSel.css("opacity") >= .8) {
@@ -233,7 +343,7 @@ function buttonSwitch(jQSel, buttonAnimDuration = 1500) {
             targets: targetID,
             opacity: [1, 0],
             duration: buttonAnimDuration,
-            // begin: () => buttonState.disabled = true
+            begin: () => buttonState.disabled = true
             // Separating button state into separate function
         })
     } else if (jQSel.css("opacity") < .25) {
@@ -241,34 +351,11 @@ function buttonSwitch(jQSel, buttonAnimDuration = 1500) {
             targets: targetID,
             opacity: [0, 1],
             duration: buttonAnimDuration,
-            // complete: () => buttonState.disabled = false
+            complete: () => buttonState.disabled = false
         })
     }
 }
 
-async function buttonSwitchAll(duration = 1500) {
-    $('#optionBox').find('.button').each(function () {
-        if (this.innerText) {
-            // let that = $(this);
-            buttonSwitch($(this), duration);
-        }
-    });
-}
-
-// I think all these animating functions need to be rewritten into their own independent async functions
-// As it is now it's super messy. The callbacks don't really work. It's time for async boyyyyy.
-
-// TEXT FADEIN ASYNC FUNCTION
-//
-async function fadeTextIn(spanSelector = '.word') {
-    const vals = await animValueCalc(textTarg);
-    const delay = vals[0], duration = vals[1];
-    words.each(function (index) {
-        $(this).delay(index * delay).animate({'opacity': 1}, duration);
-        let elem = document.querySelector('#textBox');
-        elem.scrollTop = elem.scrollHeight;
-    });
-}
 
 function textFadeIn(textTarg = '.word', callback = 0) {
     const vals = animValueCalc(textTarg);
@@ -321,20 +408,6 @@ function fadeDurationCalc(fadeIn = true) {
 
 function transition(jQTextClass = '.word', fixAlign = false, killStoryBox = false) {
     textFadeOut(jQTextClass, fadeInController, true, fixAlign, killStoryBox);
-}
-
-function spanify(textTarget, textStr, spanClass = 'word') {
-    let timeoutDuration = 0;
-    let spanifySuccessMessage = `Spanify promise resolved after ${timeoutDuration}ms`;
-    return new Promise(function (res, rej) {
-        $(`.${spanClass}`).css('opacity', 0);
-        const splitText = textStr.split(' ');
-        textTarget.empty();
-        for (i in splitText) {
-            textTarget.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
-        }
-        res(spanifySuccessMessage);
-    })
 }
 
 function endButtonAnim() {
@@ -419,7 +492,6 @@ $('#selectionBox').click(e => {
         getOption = doSomeAJAX(selectedOption);
         getOption.then(response => new Promise(function (res, rej) {
                 const currentContext = response[0].context;
-                // Write better code here to not repeat self
                 Object.entries(currentContext).forEach((key, value) => {
                     localStorage.setItem(key, value);
                 });
