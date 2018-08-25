@@ -17,12 +17,14 @@ def game_page(request):
 def story_api(request):
     response = []
     if request.method == 'GET':
+        print(request)
         if request.GET.get('fetchStories'):
-            story_queryset = Story.objects.all()
+            story_title_list = Story.objects.all().values('story_title')
+            print(story_title_list)
             response = {'stories': {}}
             counter = 1
-            for i in story_queryset:
-                response['stories'].update({str(counter): i.story_title})
+            for i in story_title_list:
+                response['stories'].update({str(counter): i['story_title']})
                 counter += 1
         elif request.GET.get('storySelection'):
             request_story = request.GET.get('storySelection')
@@ -66,4 +68,7 @@ def story_api(request):
                 'intra': return_scene_position
             }
             response.append({'context': return_context})
-        return JsonResponse(response, safe=False)
+        print(response)
+        capsule = JsonResponse(response, safe=False)
+        print(capsule)
+        return capsule
