@@ -32,7 +32,7 @@ async function fadeTextIn(spanSelector = '.word') {
     const words = $($(spanSelector).get());
     const vals = await animValueCalc(spanSelector);
     const delay = vals[0], duration = vals[1];
-    let successMessage = function() {
+    let successMessage = function () {
         return 'Text animated in!'
     }
     animDuration = duration
@@ -43,7 +43,13 @@ async function fadeTextIn(spanSelector = '.word') {
         animDuration += delay
     });
     console.log(animDuration);
-    setTimeout(function() {console.log('resolved text animation')}, animDuration)
+    // YAY ADDING THIS RETURN LINE FIXED IT!!!
+    // Nothing was being waited on so I needed to return a promise that would resolve after the animduration
+    // rather than setting a timeout.
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, animDuration);
+    });
+    // setTimeout(function() {console.log('resolved text animation')}, animDuration)
 }
 
 async function fadeTextOut(spanSelector = '.word') {
@@ -148,7 +154,6 @@ async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1
     });
 }
 
-
 async function retrieveStoryButtons(response) {
     const test = console.log;
     const storyObject = response.stories;
@@ -170,9 +175,9 @@ let newText = '';
 async function initialize() {
     // Later I should rewrite this so that it completely resets the state of the page. That'd allow for an again button
     // to be smoothly executed and require no page reload.
-    let buttonState = document.querySelector('.storySelector');
+    // let buttonState = document.querySelector('.storySelector');
     const elToAnimate = $('#storyWelcome');
-    const duration = 10000;
+    const duration = 3500;
     const apiCall = await callAPI.bind(this, 'No Selection', true);
     const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);
     spanify(elToAnimate, elToAnimate.text());
@@ -186,10 +191,8 @@ async function initialize() {
 
 
 function buttonSwitch(button, buttonAnimDuration = 1500) {
-    console.log(button);
     targetID = '#' + button.getAttribute('id');
     let buttonState = document.querySelector(targetID);
-
     if (button.getAttribute("opacity") >= .8) {
         anime({
             targets: targetID,
@@ -247,5 +250,15 @@ function endButtonAnim() {
     })
 }
 
-
+// selectionBox is a div encompassing all selectable options
+$('#selectionBox').click(e => {
+    if (e.target.classList.contains('storySelector')) {
+        e.stopPropagation();
+        const selectedStory = e.target.innerText;
+        asyncButtonSwitchAll().then();
+    }
+    else if (e.target.classList.contains('optionSelector')) {
+        // Code to handle option selection
+    }
+});
 $(document).ready(initialize);
