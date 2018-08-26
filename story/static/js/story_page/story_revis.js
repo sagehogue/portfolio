@@ -32,11 +32,18 @@ async function fadeTextIn(spanSelector = '.word') {
     const words = $($(spanSelector).get());
     const vals = await animValueCalc(spanSelector);
     const delay = vals[0], duration = vals[1];
+    let successMessage = function() {
+        return 'Text animated in!'
+    }
+    animDuration = duration
     words.each(function (index) {
         $(this).delay(index * delay).animate({'opacity': 1}, duration);
         let elem = document.querySelector('#textBox');
         elem.scrollTop = elem.scrollHeight;
+        animDuration += delay
     });
+    console.log(animDuration);
+    setTimeout(function() {console.log('resolved text animation')}, animDuration)
 }
 
 async function fadeTextOut(spanSelector = '.word') {
@@ -136,7 +143,7 @@ async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1
     }
     document.querySelectorAll(buttonType).forEach(function (current) {
         console.log(current);
-            buttonSwitch(current, duration);
+        buttonSwitch(current, duration);
 
     });
 }
@@ -165,34 +172,17 @@ async function initialize() {
     // to be smoothly executed and require no page reload.
     let buttonState = document.querySelector('.storySelector');
     const elToAnimate = $('#storyWelcome');
+    const duration = 10000;
+    const apiCall = await callAPI.bind(this, 'No Selection', true);
+    const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);
     spanify(elToAnimate, elToAnimate.text());
     // await doesn't seem to do anything here. find out why on reddit
-    await fadeTextIn();
-    // const init_animation = () => {
-    //     anime({
-    //         targets: '.storySelector',
-    //         opacity: 1,
-    //         duration: 1500,
-    //         complete: function () {
-    //             buttonState.disabled = false;
-    //         }
-    //     });
-    // };
-    await callAPI('No Selection', true)
-        .then(response => {
-            console.log(response);
-            retrieveStoryButtons(response);
-        }).then(res => {
-            const duration = 10000;
-            asyncButtonSwitchAll('.storySelector', duration, res);
-    });
-
+    await fadeTextIn().then(apiCall).then(retrieveStoryButtons).then(buttonSwitchAll);
 }
 
 // the argument called selected declares the ID of the option or story selected by the user.
 // the argument selectedStory is used in differentiating between story requests and option requests.
 // prev_scene is currently extraneous information.
-
 
 
 function buttonSwitch(button, buttonAnimDuration = 1500) {
@@ -209,13 +199,17 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
                 buttonState.disabled = true
                 console.log('Unpainting button');
                 // Separating button state into separate function
-            }})
+            }
+        })
     } else if (button.getAttribute("opacity") < .25) {
         anime({
             targets: targetID,
             opacity: [0, 1],
             duration: buttonAnimDuration,
-            complete: () => {console.log('button painted'); buttonState.disabled = false}
+            complete: () => {
+                console.log('button painted');
+                buttonState.disabled = false
+            }
         })
     }
 }
