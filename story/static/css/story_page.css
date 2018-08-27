@@ -120,7 +120,7 @@ hr {
     opacity: 1;
 }
 .optionSelector {
-    display: none;
+    /*display: none;*/
     opacity: 0;
     max-height: 50%;
     overflow: auto;

@@ -54,21 +54,19 @@ async function fadeTextIn(spanSelector = '.word') {
 
 async function fadeTextOut(spanSelector = '.word') {
     const words = $($(spanSelector).get().reverse());
-    const vals = animValueCalc(jQTextClass);
-    const speed = vals[0], animDuration = vals[1], totalDuration = vals[2];
+    const vals = animValueCalc(spanSelector);
+    const speed = vals[0], duration = vals[1], totalDuration = vals[2];
     words.each(function (index) {
         let fadeOutDelay = index * speed;
-        if (index === words.length - 1) {
-            timer = animDuration + (speed * words.length);
-            $(this).delay(fadeOutDelay).animate({'opacity': 0}, animDuration, function () {
-            });
-        }
+        $(this).delay(fadeOutDelay).animate({'opacity': 0}, duration, function () {
+
+        });
     });
     // Timeout for entire duration of this animation -- should make sure that the .delay() function doesn't block
     // or this will probably screw me up
-    setTimeout(() => {
-        res()
-    }, totalDuration)
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, totalDuration);
+    });
 }
 
 async function callAPI(userSelection, requestAllStories = false, requestSelectedStory = false) {
@@ -128,6 +126,7 @@ function switchToOptionBox() {
     $('#optionBox').css('display', 'flex');
 }
 
+// UPDATE THIS FUNCTION
 function spanify(textTarget, textStr, spanClass = 'word') {
     let timeoutDuration = 0;
     let spanifySuccessMessage = `Spanify promise resolved after ${timeoutDuration}ms`;
@@ -143,14 +142,13 @@ function spanify(textTarget, textStr, spanClass = 'word') {
 }
 
 async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1500) {
-    let buttonContainer = '#optionBox';
-    if (buttonType === '.storySelector') {
-        buttonContainer = '#storyButtonBox'
-    }
     document.querySelectorAll(buttonType).forEach(function (current) {
         console.log(current);
         buttonSwitch(current, duration);
 
+    });
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, duration);
     });
 }
 
@@ -177,7 +175,7 @@ async function initialize() {
     // to be smoothly executed and require no page reload.
     // let buttonState = document.querySelector('.storySelector');
     const elToAnimate = $('#storyWelcome');
-    const duration = 3500;
+    const duration = 850;
     const apiCall = await callAPI.bind(this, 'No Selection', true);
     const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);
     spanify(elToAnimate, elToAnimate.text());
@@ -191,33 +189,61 @@ async function initialize() {
 
 
 function buttonSwitch(button, buttonAnimDuration = 1500) {
-    targetID = '#' + button.getAttribute('id');
-    let buttonState = document.querySelector(targetID);
-    if (button.getAttribute("opacity") >= .8) {
-        anime({
-            targets: targetID,
-            opacity: [1, 0],
-            duration: buttonAnimDuration,
-            begin: () => {
-                buttonState.disabled = true
-                console.log('Unpainting button');
-                // Separating button state into separate function
-            }
-        })
-    } else if (button.getAttribute("opacity") < .25) {
-        anime({
-            targets: targetID,
-            opacity: [0, 1],
-            duration: buttonAnimDuration,
-            complete: () => {
-                console.log('button painted');
-                buttonState.disabled = false
-            }
-        })
+    const buttonID = '#' + button.getAttribute('id');
+    console.log(buttonID)
+    console.log(button.classList);
+    let buttonState = document.querySelector(buttonID);
+    if (button.classList.contains("buttonOpaque")) {
+        buttonState.disabled = true;
+        $(buttonID).animate({'opacity': 0}, buttonAnimDuration, function () {
+            button.classList.value.replace("buttonOpaque", '')
+        });
+    } else {
+        $(buttonID).animate({'opacity': 1}, buttonAnimDuration, function () {
+            button.classList.add('buttonOpaque');
+            buttonState.disabled = false;
+        });
     }
 }
 
-
+function buttonUpdate() {
+    const currentContext = JSON.parse(localStorage.getItem('currentContext'));
+    const optionCount = parseInt(currentContext.optionQuantity);
+    const divOptions = JSON.parse(localStorage.getItem('options'));
+    const intra = localStorage.getItem('intra');
+    let ourSuperLazyCounter = 0;
+    console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
+    try {
+        if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
+            throw 'Reached end of scene chain';
+        }
+        // Looping through buttons and injecting
+        $('#optionBox').find('.button').each(function (index) {
+            if (ourSuperLazyCounter >= optionCount) {
+                return false // I think this is to exit the function early if there is no more text to inject?
+            }
+            let focus = String(index + 1);
+            this.innerText = (divOptions[focus]["option_text"]);
+            ourSuperLazyCounter++;
+        },);
+        // $('#optionBox').find('.button').each(function (index) {
+        //     buttonSwitchAll(4000);
+        // if (ourSuperLazyCounter >= optionCount) {
+        //     console.log(ourSuperLazyCounter);
+        //     return false
+        // }
+        // if (this.innerText) {
+        //     let that = $(this);
+        //     buttonSwitch(that, fadeThenCall = true)
+        // }
+        // ourSuperLazyCounter++;
+        // });
+        // setTimeout(buttonUpdate, 4500) not sure why it's calling itself
+    } catch (report) {
+        console.log(report);
+        endButtonAnim();
+    }
+}
 function endButtonAnim() {
     let normalizeOpacity = new Promise((res, rej) => {
         let animCount = 0;
@@ -254,8 +280,20 @@ function endButtonAnim() {
 $('#selectionBox').click(e => {
     if (e.target.classList.contains('storySelector')) {
         e.stopPropagation();
-        const selectedStory = e.target.innerText;
-        asyncButtonSwitchAll().then();
+        const selectedStory = e.target.id;
+        const storyAPICall = callAPI.bind(this, selectedStory, false, true);
+        asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
+            alignFix();
+            switchToOptionBox();
+            console.log('running button!')
+            buttonUpdate();
+            const buttonAnimDuration = 1500;
+            asyncButtonSwitchAll('.optionSelector', buttonAnimDuration).then(() => {
+                return new Promise(function (resolve, reject) {
+                    setTimeout(resolve, buttonAnimDuration);
+                });
+            })
+        })
     }
     else if (e.target.classList.contains('optionSelector')) {
         // Code to handle option selection
