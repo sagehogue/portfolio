@@ -17,6 +17,10 @@
 // #4: function spanify
 // #5: async function buttonSwitchAll
 
+
+// COMPLETE
+// #1:
+
 // NOTES
 // Current fucking mystery: The generated buttons don't seem able to be selected by dom selectors.
 // Fetch API not useful in this case - I have jQuery tangled in here already, so may as well use $.ajax
@@ -37,12 +41,12 @@ async function fadeTextIn(spanSelector = '.word') {
     }
     animDuration = duration
     words.each(function (index) {
+        console.log($(this));
         $(this).delay(index * delay).animate({'opacity': 1}, duration);
         let elem = document.querySelector('#textBox');
         elem.scrollTop = elem.scrollHeight;
         animDuration += delay
     });
-    console.log(animDuration);
     // YAY ADDING THIS RETURN LINE FIXED IT!!!
     // Nothing was being waited on so I needed to return a promise that would resolve after the animduration
     // rather than setting a timeout.
@@ -126,24 +130,45 @@ function switchToOptionBox() {
     $('#optionBox').css('display', 'flex');
 }
 
-// UPDATE THIS FUNCTION
-function spanify(textTarget, textStr, spanClass = 'word') {
-    let timeoutDuration = 0;
-    let spanifySuccessMessage = `Spanify promise resolved after ${timeoutDuration}ms`;
-    return new Promise(function (res, rej) {
-        $(`.${spanClass}`).css('opacity', 0);
-        const splitText = textStr.split(' ');
-        textTarget.empty();
-        for (i in splitText) {
-            textTarget.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
+// firstCall controls where the text to spanify is sourced from.
+// spanify turns a string into separate span elements with a common class.
+function spanify(firstCall = false) {
+    const spanClass = 'word';
+    if (firstCall) {
+        const textContainer = $('#storyWelcome');
+        const textStr = textContainer.text();
+        let spanifySuccessMessage = function () {
+            console.log('First spanify was a success!')
         }
-        res(spanifySuccessMessage);
-    })
+        return new Promise(function (res, rej) {
+            $(`.${spanClass}`).css('opacity', 0);
+            const splitText = textStr.split(' ');
+            textContainer.empty();
+            for (i in splitText) {
+                textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
+            }
+            res(spanifySuccessMessage);
+        })
+    } else {
+        const textContainer = $('#textBox');
+        const textStr = localStorage.getItem('sceneText');
+        let spanifySuccessMessage = function () {
+            console.log('Sequential spanify was a success!')
+        }
+        return new Promise(function (res, rej) {
+            $(`.${spanClass}`).css('opacity', 0);
+            const splitText = textStr.split(' ');
+            textContainer.empty();
+            for (i in splitText) {
+                textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
+            }
+            res(spanifySuccessMessage);
+        })
+    }
 }
 
 async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1500) {
     document.querySelectorAll(buttonType).forEach(function (current) {
-        console.log(current);
         buttonSwitch(current, duration);
 
     });
@@ -157,7 +182,6 @@ async function retrieveStoryButtons(response) {
     const storyObject = response.stories;
     const storyArray = Object.entries(storyObject);
     const buttonContainer = document.querySelector('#storyButtonBox');
-    console.log(storyArray);
     storyArray.forEach((currentArray) => {
         let newButton = document.createElement('button');
         newButton.setAttribute("type", "button");
@@ -174,11 +198,10 @@ async function initialize() {
     // Later I should rewrite this so that it completely resets the state of the page. That'd allow for an again button
     // to be smoothly executed and require no page reload.
     // let buttonState = document.querySelector('.storySelector');
-    const elToAnimate = $('#storyWelcome');
     const duration = 850;
     const apiCall = await callAPI.bind(this, 'No Selection', true);
     const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);
-    spanify(elToAnimate, elToAnimate.text());
+    spanify(true);
     // await doesn't seem to do anything here. find out why on reddit
     await fadeTextIn().then(apiCall).then(retrieveStoryButtons).then(buttonSwitchAll);
 }
@@ -190,8 +213,6 @@ async function initialize() {
 
 function buttonSwitch(button, buttonAnimDuration = 1500) {
     const buttonID = '#' + button.getAttribute('id');
-    console.log(buttonID)
-    console.log(button.classList);
     let buttonState = document.querySelector(buttonID);
     if (button.classList.contains("buttonOpaque")) {
         buttonState.disabled = true;
@@ -244,6 +265,7 @@ function buttonUpdate() {
         endButtonAnim();
     }
 }
+
 function endButtonAnim() {
     let normalizeOpacity = new Promise((res, rej) => {
         let animCount = 0;
@@ -283,16 +305,23 @@ $('#selectionBox').click(e => {
         const selectedStory = e.target.id;
         const storyAPICall = callAPI.bind(this, selectedStory, false, true);
         asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
+            const currentContext = res[0]['context'];
+            localStorage.setItem("story", currentContext.story_name);
+            localStorage.setItem("scene", currentContext.scene);
+            localStorage.setItem("sceneText", currentContext.sceneText);
+            localStorage.setItem("options", JSON.stringify(currentContext.options));
+            localStorage.setItem('currentContext', JSON.stringify(currentContext));
+            localStorage.setItem('intra', currentContext.intra);
             alignFix();
             switchToOptionBox();
-            console.log('running button!')
+            console.log(`${res}`)
             buttonUpdate();
             const buttonAnimDuration = 1500;
             asyncButtonSwitchAll('.optionSelector', buttonAnimDuration).then(() => {
                 return new Promise(function (resolve, reject) {
                     setTimeout(resolve, buttonAnimDuration);
                 });
-            })
+            }).then(spanify).then(fadeTextIn);
         })
     }
     else if (e.target.classList.contains('optionSelector')) {

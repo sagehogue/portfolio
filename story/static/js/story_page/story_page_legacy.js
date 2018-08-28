@@ -155,9 +155,9 @@ $('#selectionBox').click(e => {
             complete: function () {
                 let promisedData = doSomeAJAX(selectedStory, true);
                 promisedData.then(response => {
-                    const currentContext = response[0]['context'];
                     newText = currentContext.sceneText;
                     // $('#optionBox').css('min-width', '100%');
+                    const currentContext = response[0]['context'];
                     localStorage.setItem("story", currentContext.story_name);
                     localStorage.setItem("scene", currentContext.scene);
                     localStorage.setItem("options", JSON.stringify(currentContext.options));
