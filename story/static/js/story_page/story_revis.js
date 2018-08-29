@@ -1,8 +1,8 @@
 // TODOS
 // #1: Rewrite functions with async and more comprehensible promise logic
 // #2: Reorder code to run with new functions
-// #3: Create a function to dynamically generate new HTML for the story selector buttons and remove the hardcoding.
-// #4: WRITE THAT DAMN RENDERSTORYBUTTON function :OOOO thx bro
+// #3: Write text content updating function & integrate
+
 
 // COMPLETE MAIN FUNCTIONS
 // #1: async function fadeTextIn
@@ -19,7 +19,8 @@
 
 
 // COMPLETE
-// #1:
+// #1: WRITE THAT DAMN RENDERSTORYBUTTON function :OOOO thx bro
+// #2: Create a function to dynamically generate new HTML for the story selector buttons and remove the hardcoding.
 
 // NOTES
 // Current fucking mystery: The generated buttons don't seem able to be selected by dom selectors.
@@ -32,16 +33,18 @@
 // (previously assumed it could be implicitly tracked but I don't think in my case that is so)
 // and stoof to sequence. async / await seems amazeballs as well.
 
-async function fadeTextIn(spanSelector = '.word') {
+async function fadeTextIn(res) {
+    console.log(res);
+    const spanSelector = '.word';
     const words = $($(spanSelector).get());
     const vals = await animValueCalc(spanSelector);
     const delay = vals[0], duration = vals[1];
+    console.log(spanSelector);
     let successMessage = function () {
         return 'Text animated in!'
     }
-    animDuration = duration
+    animDuration = duration;
     words.each(function (index) {
-        console.log($(this));
         $(this).delay(index * delay).animate({'opacity': 1}, duration);
         let elem = document.querySelector('#textBox');
         elem.scrollTop = elem.scrollHeight;
@@ -135,11 +138,11 @@ function switchToOptionBox() {
 function spanify(firstCall = false) {
     const spanClass = 'word';
     if (firstCall) {
+        let spanifySuccessMessage = function () {
+            console.log('successful spanify')
+        }
         const textContainer = $('#storyWelcome');
         const textStr = textContainer.text();
-        let spanifySuccessMessage = function () {
-            console.log('First spanify was a success!')
-        }
         return new Promise(function (res, rej) {
             $(`.${spanClass}`).css('opacity', 0);
             const splitText = textStr.split(' ');
@@ -152,8 +155,9 @@ function spanify(firstCall = false) {
     } else {
         const textContainer = $('#textBox');
         const textStr = localStorage.getItem('sceneText');
+        const timeoutDuration = 0;
         let spanifySuccessMessage = function () {
-            console.log('Sequential spanify was a success!')
+            console.log(textStr)
         }
         return new Promise(function (res, rej) {
             $(`.${spanClass}`).css('opacity', 0);
@@ -162,15 +166,19 @@ function spanify(firstCall = false) {
             for (i in splitText) {
                 textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
             }
-            res(spanifySuccessMessage);
+            setTimeout(() => {
+                res(spanifySuccessMessage);
+            }, timeoutDuration)
         })
+
     }
 }
 
 async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1500) {
     document.querySelectorAll(buttonType).forEach(function (current) {
-        buttonSwitch(current, duration);
-
+        if (current.innerText) {
+            buttonSwitch(current, duration);
+        }
     });
     return new Promise(function (resolve, reject) {
         setTimeout(resolve, duration);
@@ -227,19 +235,22 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
     }
 }
 
-function buttonUpdate() {
+// pass it '.optionSelector' or '.storySelector' to have it operate on the respective type.
+function buttonUpdate(buttonType) {
     const currentContext = JSON.parse(localStorage.getItem('currentContext'));
     const optionCount = parseInt(currentContext.optionQuantity);
     const divOptions = JSON.parse(localStorage.getItem('options'));
     const intra = localStorage.getItem('intra');
     let ourSuperLazyCounter = 0;
     console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
+
     try {
         if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
             throw 'Reached end of scene chain';
         }
+        console.log(buttonType);
         // Looping through buttons and injecting
-        $('#optionBox').find('.button').each(function (index) {
+        $('#optionBox').find(buttonType).each(function (index) {
             if (ourSuperLazyCounter >= optionCount) {
                 return false // I think this is to exit the function early if there is no more text to inject?
             }
@@ -314,14 +325,21 @@ $('#selectionBox').click(e => {
             localStorage.setItem('intra', currentContext.intra);
             alignFix();
             switchToOptionBox();
-            console.log(`${res}`)
-            buttonUpdate();
+            console.log(`${res}`);
+
+            // NEED TO SURGERY :O
+            // spanify & fadeTextIn should occur before the button appears. What was I thinking.
+            buttonUpdate('.optionSelector');
             const buttonAnimDuration = 1500;
-            asyncButtonSwitchAll('.optionSelector', buttonAnimDuration).then(() => {
-                return new Promise(function (resolve, reject) {
-                    setTimeout(resolve, buttonAnimDuration);
-                });
-            }).then(spanify).then(fadeTextIn);
+            const buttonSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration)
+            spanify().then(fadeTextIn).then(buttonSwitchCallback)
+
+
+            // asyncButtonSwitchAll('.optionSelector', buttonAnimDuration).then(() => {
+            // return new Promise(function (resolve, reject) {
+            // setTimeout(resolve, buttonAnimDuration);
+            // });
+            // }).then(spanify).then(fadeTextIn);
         })
     }
     else if (e.target.classList.contains('optionSelector')) {
