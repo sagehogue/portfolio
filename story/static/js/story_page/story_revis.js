@@ -34,9 +34,9 @@
 // and stoof to sequence. async / await seems amazeballs as well.
 
 async function fadeTextIn(res) {
-    console.log(res);
     const spanSelector = '.word';
     const words = $($(spanSelector).get());
+    console.log(words)
     const vals = await animValueCalc(spanSelector);
     const delay = vals[0], duration = vals[1];
     console.log(spanSelector);
@@ -147,15 +147,17 @@ function spanify(firstCall = false) {
             $(`.${spanClass}`).css('opacity', 0);
             const splitText = textStr.split(' ');
             textContainer.empty();
+            const timeoutDuration = 0;
             for (i in splitText) {
                 textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
             }
-            res(spanifySuccessMessage);
+            setTimeout(res, timeoutDuration)
+            
         })
     } else {
         const textContainer = $('#textBox');
         const textStr = localStorage.getItem('sceneText');
-        const timeoutDuration = 0;
+        const timeoutDuration =100;
         let spanifySuccessMessage = function () {
             console.log(textStr)
         }
@@ -166,8 +168,8 @@ function spanify(firstCall = false) {
             for (i in splitText) {
                 textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
             }
-            setTimeout(() => {
-                res(spanifySuccessMessage);
+            setTimeout((spanifySuccessMessage) => {
+                res;
             }, timeoutDuration)
         })
 
@@ -242,8 +244,7 @@ function buttonUpdate(buttonType) {
     const divOptions = JSON.parse(localStorage.getItem('options'));
     const intra = localStorage.getItem('intra');
     let ourSuperLazyCounter = 0;
-    console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
-
+    // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
     try {
         if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
             throw 'Reached end of scene chain';
@@ -258,19 +259,6 @@ function buttonUpdate(buttonType) {
             this.innerText = (divOptions[focus]["option_text"]);
             ourSuperLazyCounter++;
         },);
-        // $('#optionBox').find('.button').each(function (index) {
-        //     buttonSwitchAll(4000);
-        // if (ourSuperLazyCounter >= optionCount) {
-        //     console.log(ourSuperLazyCounter);
-        //     return false
-        // }
-        // if (this.innerText) {
-        //     let that = $(this);
-        //     buttonSwitch(that, fadeThenCall = true)
-        // }
-        // ourSuperLazyCounter++;
-        // });
-        // setTimeout(buttonUpdate, 4500) not sure why it's calling itself
     } catch (report) {
         console.log(report);
         endButtonAnim();
@@ -317,33 +305,42 @@ $('#selectionBox').click(e => {
         const storyAPICall = callAPI.bind(this, selectedStory, false, true);
         asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
             const currentContext = res[0]['context'];
-            localStorage.setItem("story", currentContext.story_name);
-            localStorage.setItem("scene", currentContext.scene);
-            localStorage.setItem("sceneText", currentContext.sceneText);
-            localStorage.setItem("options", JSON.stringify(currentContext.options));
-            localStorage.setItem('currentContext', JSON.stringify(currentContext));
-            localStorage.setItem('intra', currentContext.intra);
+            console.log(currentContext)
+            Object.entries(currentContext).forEach((key, value) => {
+                localStorage.setItem(key, value);
+            });
             alignFix();
             switchToOptionBox();
-            console.log(`${res}`);
-
-            // NEED TO SURGERY :O
-            // spanify & fadeTextIn should occur before the button appears. What was I thinking.
             buttonUpdate('.optionSelector');
             const buttonAnimDuration = 1500;
-            const buttonSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration)
-            spanify().then(fadeTextIn).then(buttonSwitchCallback)
-
-
-            // asyncButtonSwitchAll('.optionSelector', buttonAnimDuration).then(() => {
-            // return new Promise(function (resolve, reject) {
-            // setTimeout(resolve, buttonAnimDuration);
-            // });
-            // }).then(spanify).then(fadeTextIn);
+            const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
+            spanify().then(fadeTextIn).then(optionSwitchCallback)
         })
     }
     else if (e.target.classList.contains('optionSelector')) {
         // Code to handle option selection
+        e.stopPropagation();
+        const divOptions = JSON.parse(localStorage.getItem('options'));
+        const optionLabelLocator = e.target.id.slice(-1);
+        const selectedOption = divOptions[optionLabelLocator].option_label;
+        const optionAPICall = callAPI.bind(this, selectedOption)
+        console.log(selectedOption)
+        asyncButtonSwitchAll('.optionSelector').then(fadeTextOut).then(optionAPICall).then(res => {
+            // The code below here doesn't work as desired yet - need to 
+            // ensure sequencing. fadetextin is performing with the same text as
+            // when it painted the first scene.
+            console.log(res);
+            const currentContext = res[0]['context'];
+            console.log(currentContext)
+            Object.entries(currentContext).forEach((key, value) => {
+                localStorage.setItem(key, value);
+            });
+            buttonUpdate('.optionSelector');
+            const timeoutDuration = 150;
+            return new Promise(function(res, rej) {
+                setTimeout(res, timeoutDuration)
+            })
+        }).then(spanify).then(fadeTextIn).then(asyncButtonSwitchAll)
     }
 });
 $(document).ready(initialize);

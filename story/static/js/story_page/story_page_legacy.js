@@ -175,17 +175,13 @@ $('#selectionBox').click(e => {
         const optionId = '#' + e.target.id;
         e.stopPropagation();
         const divOptions = JSON.parse(localStorage.getItem('options'));
-        console.log(divOptions);
         const optionLabelLocator = e.target.id.slice(-1);
         const selectedOption = divOptions[optionLabelLocator].option_label;
         // performs AJAX call
         getOption = doSomeAJAX(selectedOption);
         getOption.then(response => new Promise(function (res, rej) {
                 const currentContext = response[0].context;
-                Object.entries(currentContext).forEach((key, value) => {
-                    localStorage.setItem(key, value);
-                });
-                newText = currentContext.sceneText;
+                t = currentContext.sceneText;
                 fadeInCallBack = fadeInController.bind(this, "word", 0, true);
                 textFadeOut('.word', fadeInCallBack);
                 console.log(newText);
