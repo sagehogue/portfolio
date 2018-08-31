@@ -1,7 +1,10 @@
 // TODOS
-// #1: Rewrite functions with async and more comprehensible promise logic
+// #1: Fix fadeTextIn
+// #2: fix spanify(false) it doesnt correctly sequence promises
 // #2: Reorder code to run with new functions
-// #3: Write text content updating function & integrate
+// #4: Problematic localstorage issues. now im having problems with setting items properly and accessing them.
+// one step forward... two steps back.
+
 
 
 // COMPLETE MAIN FUNCTIONS
@@ -21,7 +24,7 @@
 // COMPLETE
 // #1: WRITE THAT DAMN RENDERSTORYBUTTON function :OOOO thx bro
 // #2: Create a function to dynamically generate new HTML for the story selector buttons and remove the hardcoding.
-
+// #3: Write text content updating function & integrate
 // NOTES
 // Current fucking mystery: The generated buttons don't seem able to be selected by dom selectors.
 // Fetch API not useful in this case - I have jQuery tangled in here already, so may as well use $.ajax
@@ -33,19 +36,21 @@
 // (previously assumed it could be implicitly tracked but I don't think in my case that is so)
 // and stoof to sequence. async / await seems amazeballs as well.
 
-async function fadeTextIn(res) {
+async function fadeTextIn(spanifyFirst = false) {
     const spanSelector = '.word';
+    if (spanifyFirst) { const spanifyIsDone = await spanify() } // not sure if this does anything
+    // was put in for testing purposes - this function wasnt updating the text to animate properly.
     const words = $($(spanSelector).get());
-    console.log(words)
     const vals = await animValueCalc(spanSelector);
     const delay = vals[0], duration = vals[1];
-    console.log(spanSelector);
+
+    // attempting to put spanify in here so it properly calls shit!!!
     let successMessage = function () {
         return 'Text animated in!'
     }
     animDuration = duration;
     words.each(function (index) {
-        $(this).delay(index * delay).animate({'opacity': 1}, duration);
+        $(this).delay(index * delay).animate({ 'opacity': 1 }, duration);
         let elem = document.querySelector('#textBox');
         elem.scrollTop = elem.scrollHeight;
         animDuration += delay
@@ -56,7 +61,7 @@ async function fadeTextIn(res) {
     return new Promise(function (resolve, reject) {
         setTimeout(resolve, animDuration);
     });
-    // setTimeout(function() {console.log('resolved text animation')}, animDuration)
+
 }
 
 async function fadeTextOut(spanSelector = '.word') {
@@ -65,7 +70,7 @@ async function fadeTextOut(spanSelector = '.word') {
     const speed = vals[0], duration = vals[1], totalDuration = vals[2];
     words.each(function (index) {
         let fadeOutDelay = index * speed;
-        $(this).delay(fadeOutDelay).animate({'opacity': 0}, duration, function () {
+        $(this).delay(fadeOutDelay).animate({ 'opacity': 0 }, duration, function () {
 
         });
     });
@@ -90,7 +95,7 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
             type: 'GET',
             data: {
                 storySelection: userSelection
-            }
+            },
         });
         else {
             // Call API (send selected option) with request for next scene information
@@ -98,6 +103,13 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
                 url: '/story/api/', type: 'GET',
                 data: {
                     optionSelection: userSelection
+                },
+                complete: function (res) {
+                    console.log(res.responseText.context)
+                    const currentContext = res.responseText.context;
+                    Object.entries(currentContext).forEach((key, value) => {
+                        localStorage.setItem(key, value);
+                    });
                 }
             });
         }
@@ -147,17 +159,18 @@ function spanify(firstCall = false) {
             $(`.${spanClass}`).css('opacity', 0);
             const splitText = textStr.split(' ');
             textContainer.empty();
-            const timeoutDuration = 0;
+            const timeoutDuration = 200;
             for (i in splitText) {
                 textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
             }
             setTimeout(res, timeoutDuration)
-            
+
         })
     } else {
         const textContainer = $('#textBox');
         const textStr = localStorage.getItem('sceneText');
-        const timeoutDuration =100;
+        console.log(textStr)
+        const timeoutDuration = 1000;
         let spanifySuccessMessage = function () {
             console.log(textStr)
         }
@@ -168,9 +181,7 @@ function spanify(firstCall = false) {
             for (i in splitText) {
                 textContainer.append(`<span class='${spanClass}'>${splitText[i]} </span>`)
             }
-            setTimeout((spanifySuccessMessage) => {
-                res;
-            }, timeoutDuration)
+            setTimeout(res, timeoutDuration)
         })
 
     }
@@ -188,7 +199,6 @@ async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1
 }
 
 async function retrieveStoryButtons(response) {
-    const test = console.log;
     const storyObject = response.stories;
     const storyArray = Object.entries(storyObject);
     const buttonContainer = document.querySelector('#storyButtonBox');
@@ -226,11 +236,11 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
     let buttonState = document.querySelector(buttonID);
     if (button.classList.contains("buttonOpaque")) {
         buttonState.disabled = true;
-        $(buttonID).animate({'opacity': 0}, buttonAnimDuration, function () {
+        $(buttonID).animate({ 'opacity': 0 }, buttonAnimDuration, function () {
             button.classList.value.replace("buttonOpaque", '')
         });
     } else {
-        $(buttonID).animate({'opacity': 1}, buttonAnimDuration, function () {
+        $(buttonID).animate({ 'opacity': 1 }, buttonAnimDuration, function () {
             button.classList.add('buttonOpaque');
             buttonState.disabled = false;
         });
@@ -239,7 +249,8 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
 
 // pass it '.optionSelector' or '.storySelector' to have it operate on the respective type.
 function buttonUpdate(buttonType) {
-    const currentContext = JSON.parse(localStorage.getItem('currentContext'));
+    const currentContext = JSON.parse(localStorage.getItem('context'));
+    console.log(currentContext);
     const optionCount = parseInt(currentContext.optionQuantity);
     const divOptions = JSON.parse(localStorage.getItem('options'));
     const intra = localStorage.getItem('intra');
@@ -249,7 +260,6 @@ function buttonUpdate(buttonType) {
         if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
             throw 'Reached end of scene chain';
         }
-        console.log(buttonType);
         // Looping through buttons and injecting
         $('#optionBox').find(buttonType).each(function (index) {
             if (ourSuperLazyCounter >= optionCount) {
@@ -258,7 +268,7 @@ function buttonUpdate(buttonType) {
             let focus = String(index + 1);
             this.innerText = (divOptions[focus]["option_text"]);
             ourSuperLazyCounter++;
-        },);
+        });
     } catch (report) {
         console.log(report);
         endButtonAnim();
@@ -269,7 +279,7 @@ function endButtonAnim() {
     let normalizeOpacity = new Promise((res, rej) => {
         let animCount = 0;
         let fadeDuration = 1000;
-        let resMessage = console.log(`resolved promise after ${fadeDuration}ms`);
+        // let resMessage = console.log(`resolved promise after ${fadeDuration}ms`);
         $('.optionSelector').each(function () {
             let elemOpacity = this.style.opacity;
             let that = this;
@@ -303,8 +313,11 @@ $('#selectionBox').click(e => {
         e.stopPropagation();
         const selectedStory = e.target.id;
         const storyAPICall = callAPI.bind(this, selectedStory, false, true);
+        const buttonAnimDuration = 1500;
+        const spanifyCallBack = spanify.bind(this, true)
+        const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
         asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
-            const currentContext = res[0]['context'];
+            const currentContext = res[0];
             console.log(currentContext)
             Object.entries(currentContext).forEach((key, value) => {
                 localStorage.setItem(key, value);
@@ -312,32 +325,36 @@ $('#selectionBox').click(e => {
             alignFix();
             switchToOptionBox();
             buttonUpdate('.optionSelector');
-            const buttonAnimDuration = 1500;
-            const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
-            spanify().then(fadeTextIn).then(optionSwitchCallback)
-        })
+        }).then(spanify).then(fadeTextIn).then(optionSwitchCallback)
     }
     else if (e.target.classList.contains('optionSelector')) {
         // Code to handle option selection
         e.stopPropagation();
-        const divOptions = JSON.parse(localStorage.getItem('options'));
+        const sceneOptions = JSON.parse(localStorage.getItem('options'));
         const optionLabelLocator = e.target.id.slice(-1);
-        const selectedOption = divOptions[optionLabelLocator].option_label;
-        const optionAPICall = callAPI.bind(this, selectedOption)
+        const selectedOption = sceneOptions[optionLabelLocator].option_label;
         console.log(selectedOption)
+        const optionAPICall = callAPI.bind(this, selectedOption)
+        const spanThenFade = fadeTextIn.bind(this, true);
         asyncButtonSwitchAll('.optionSelector').then(fadeTextOut).then(optionAPICall).then(res => {
             // The code below here doesn't work as desired yet - need to 
             // ensure sequencing. fadetextin is performing with the same text as
             // when it painted the first scene.
-            console.log(res);
+            // fadeTextIn is getting called with the old shit... figured out why though.
+            // the object.entries thing isn't quickly enough setting those values.. so localstorage is full of
+            // old info.
             const currentContext = res[0]['context'];
-            console.log(currentContext)
-            Object.entries(currentContext).forEach((key, value) => {
-                localStorage.setItem(key, value);
-            });
+            // Object.entries(currentContext).forEach((key, value) => {
+            //     localStorage.setItem(key, value);
+            // });
+
+
+            // NEW UPDATE --
+            // So it seems that the api call is not returning the proper context...
+
             buttonUpdate('.optionSelector');
-            const timeoutDuration = 150;
-            return new Promise(function(res, rej) {
+            const timeoutDuration = 1000;
+            return new Promise(function (res, rej) {
                 setTimeout(res, timeoutDuration)
             })
         }).then(spanify).then(fadeTextIn).then(asyncButtonSwitchAll)
