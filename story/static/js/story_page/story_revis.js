@@ -252,12 +252,13 @@ function buttonUpdate(buttonType) {
     const currentContext = JSON.parse(localStorage.getItem('context'));
     console.log(currentContext);
     const optionCount = parseInt(currentContext.optionQuantity);
-    const divOptions = JSON.parse(localStorage.getItem('options'));
+    const sceneOptions = currentContext.context.options;
+    console.log(sceneOptions)
     const intra = localStorage.getItem('intra');
     let ourSuperLazyCounter = 0;
     // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
     try {
-        if (parseInt(intra) === 1000 || typeof divOptions['1']['option_text'] === 'undefined') {
+        if (parseInt(intra) === 1000 || typeof sceneOptions['1']['option_text'] === 'undefined') {
             throw 'Reached end of scene chain';
         }
         // Looping through buttons and injecting
@@ -266,7 +267,7 @@ function buttonUpdate(buttonType) {
                 return false // I think this is to exit the function early if there is no more text to inject?
             }
             let focus = String(index + 1);
-            this.innerText = (divOptions[focus]["option_text"]);
+            this.innerText = (sceneOptions[focus]["option_text"]);
             ourSuperLazyCounter++;
         });
     } catch (report) {
@@ -318,10 +319,12 @@ $('#selectionBox').click(e => {
         const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
         asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
             const currentContext = res[0];
-            console.log(currentContext)
-            Object.entries(currentContext).forEach((key, value) => {
-                localStorage.setItem(key, value);
+            localStorage.setItem("context", JSON.stringify(currentContext))
+            // console.log(Object.entries(currentContext.context))
+            Object.entries(currentContext.context).forEach((responseArrayIndice) => {
+                localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
             });
+            console.log(localStorage.getItem('options'))
             alignFix();
             switchToOptionBox();
             buttonUpdate('.optionSelector');
