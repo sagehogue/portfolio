@@ -249,24 +249,27 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
 
 // pass it '.optionSelector' or '.storySelector' to have it operate on the respective type.
 function buttonUpdate(buttonType) {
-    const currentContext = JSON.parse(localStorage.getItem('context'));
-    console.log(currentContext);
-    const optionCount = parseInt(currentContext.optionQuantity);
-    const sceneOptions = currentContext.context.options;
-    console.log(sceneOptions)
-    const intra = localStorage.getItem('intra');
-    let ourSuperLazyCounter = 0;
     // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
     try {
-        if (parseInt(intra) === 1000 || typeof sceneOptions['1']['option_text'] === 'undefined') {
-            throw 'Reached end of scene chain';
-        }
+        // console.log(currentContext.context["options"]["1"]["scene_text"])
+        // if (parseInt(intra) === 1000 || typeof sceneOptions[1].option_text === 'undefined') {
+        //     throw 'Reached end of scene chain';
+        // }
         // Looping through buttons and injecting
+        const intra = localStorage.getItem('intra');
+        let ourSuperLazyCounter = 0;
+        const firstOption = 1
+        const currentContext = JSON.parse(localStorage.getItem('context'));
+        const optionCount = localStorage.getItem('optionQuantity');
+        console.log(optionCount)
+        const sceneOptions = JSON.parse(localStorage.getItem('options'));
+        console.log(JSON.parse(localStorage.getItem('options')))
         $('#optionBox').find(buttonType).each(function (index) {
             if (ourSuperLazyCounter >= optionCount) {
                 return false // I think this is to exit the function early if there is no more text to inject?
             }
-            let focus = String(index + 1);
+            // let focus = String(index + 1);
+            let focus = index + 1;
             this.innerText = (sceneOptions[focus]["option_text"]);
             ourSuperLazyCounter++;
         });
@@ -295,7 +298,7 @@ function endButtonAnim() {
             }
         });
         setTimeout(() => {
-            res(resMessage)
+            res
         }, fadeDuration);
     });
     normalizeOpacity.then(res => {
