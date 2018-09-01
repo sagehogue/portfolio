@@ -1,13 +1,5 @@
 // TODOS
-// #1: Fix fadeTextIn
-// #2: fix spanify(false) it doesnt correctly sequence promises
-// #2: Reorder code to run with new functions
-// #4: Problematic localstorage issues. now im having problems with setting items properly and accessing them.
-// one step forward... two steps back.
-// #5: WOW very much to prove my point, I think I should scrap the whole localStorage thing and just an object data model.
-// #6: But.. idk figure this out before brainlessly attacking it more. I've wasted so much time, I need to work smarter
-// not harder..
-
+// #1: Write function to bring initial state back so it can loop!
 
 
 // COMPLETE MAIN FUNCTIONS
@@ -32,6 +24,15 @@
 // Current fucking mystery: The generated buttons don't seem able to be selected by dom selectors.
 // Fetch API not useful in this case - I have jQuery tangled in here already, so may as well use $.ajax
 // Fetch API requires cors && I haven't bothered with that yet so it isn't properly functioning
+// #1: Fix fadeTextIn
+// #2: fix spanify(false) it doesnt correctly sequence promises
+// #2: Reorder code to run with new functions
+// #4: Problematic localstorage issues. now im having problems with setting items properly and accessing them.
+// one step forward... two steps back.
+// #5: WOW very much to prove my point, I think I should scrap the whole localStorage thing and just an object data model.
+// #6: But.. idk figure this out before brainlessly attacking it more. I've wasted so much time, I need to work smarter
+// not harder..
+//#7: Create some real control over when the button is clickable. Might have to use the opacity to measure.
 
 // REVELATION: I seem to be operating from some false assumptions here. All these async techniques
 // don't provide flow automatically - if they have nothing to wait on, no server call or whatever,
@@ -125,15 +126,24 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
                     optionSelection: userSelection
                 },
                 complete: function (res) {
-                    console.log(res)
-                    const currentContext = JSON.parse(res.responseJSON).context;
+                    const currentContext = res.responseJSON["0"]["context"];
+                    console.log(currentContext)
                     localStorage.setItem("data", JSON.stringify(currentContext))
-                    localStorage.setItem("story", currentContext.story)
-                    localStorage.setItem("storyID", currentContext.storyID)
-                    localStorage.setItem("scene", currentContext.scene)
-                    localStorage.setItem("sceneText", currentContext.sceneText)
-                    localStorage.setItem("options", JSON.stringify(currentContext.options))
-                    localStorage.setItem("optionQuantity", currentContext.optionContext)
+                    localStorage.setItem("story", currentContext["story"])
+                    localStorage.setItem("storyID", currentContext["storyID"])
+                    localStorage.setItem("scene", currentContext["scene"])
+                    localStorage.setItem("sceneText", currentContext["sceneText"])
+                    localStorage.setItem("options", JSON.stringify(currentContext["options"]))
+                    localStorage.setItem("optionQuantity", currentContext["optionContext"])
+                    // console.log(res)
+                    // const currentContext = res.responseJSON["0"]["context"];
+                    // localStorage.setItem("data", JSON.stringify(currentContext))
+                    // localStorage.setItem("story", currentContext.story)
+                    // localStorage.setItem("storyID", currentContext.storyID)
+                    // localStorage.setItem("scene", currentContext.scene)
+                    // localStorage.setItem("sceneText", currentContext.sceneText)
+                    // localStorage.setItem("options", JSON.stringify(currentContext.options))
+                    // localStorage.setItem("optionQuantity", currentContext.optionContext)
                     // console.log(currentContext)
                     // Object.entries(currentContext.context).forEach((responseArrayIndice) => {
                     //     localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
@@ -215,8 +225,9 @@ function spanify(firstCall = false) {
     }
 }
 
-async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1500) {
+async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1000) {
     document.querySelectorAll(buttonType).forEach(function (current) {
+        console.log(current)
         if (current.innerText) {
             buttonSwitch(current, duration);
         }
@@ -262,10 +273,11 @@ async function initialize() {
 function buttonSwitch(button, buttonAnimDuration = 1500) {
     const buttonID = '#' + button.getAttribute('id');
     let buttonState = document.querySelector(buttonID);
+    console.log(button.classList, button.classList.value)
     if (button.classList.contains("buttonOpaque")) {
         buttonState.disabled = true;
         $(buttonID).animate({ 'opacity': 0 }, buttonAnimDuration, function () {
-            button.classList.value.replace("buttonOpaque", '')
+            button.classList.remove("buttonOpaque")
         });
     } else {
         $(buttonID).animate({ 'opacity': 1 }, buttonAnimDuration, function () {
@@ -286,20 +298,25 @@ function buttonUpdate(buttonType) {
         //     throw 'Reached end of scene chain';
         // }
         // Looping through buttons and injecting
+        const pauseDuration = 0;
         let counter = 0;
-        const optionCount = localStorage.getItem('optionQuantity');
+        const optionCount = currentContext.optionQuantity;
         const sceneOptions = currentContext.options;
         console.log(sceneOptions)
-        console.log(JSON.parse(localStorage.getItem('options')))
         $('#optionBox').find(buttonType).each(function (index) {
             if (counter >= optionCount) {
                 return false // I think this is to exit the function early if there is no more text to inject?
             }
-            // let focus = String(index + 1);
             let focus = index + 1;
+            // let focus = String(index + 1);
+            console.log(sceneOptions)
+            console.log(sceneOptions[focus])
             this.innerText = (sceneOptions[focus]["option_text"]);
             counter++;
         });
+        return new Promise((res, rej) => {
+            setTimeout(res, pauseDuration)
+        })
     } catch (report) {
         console.log(report);
         endButtonAnim();

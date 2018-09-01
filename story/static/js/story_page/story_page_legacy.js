@@ -175,6 +175,7 @@ $('#selectionBox').click(e => {
         const optionId = '#' + e.target.id;
         e.stopPropagation();
         const divOptions = JSON.parse(localStorage.getItem('options'));
+        console.log(divOptions);
         const optionLabelLocator = e.target.id.slice(-1);
         const selectedOption = divOptions[optionLabelLocator].option_label;
         // performs AJAX call
