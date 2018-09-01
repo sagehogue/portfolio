@@ -4,6 +4,9 @@
 // #2: Reorder code to run with new functions
 // #4: Problematic localstorage issues. now im having problems with setting items properly and accessing them.
 // one step forward... two steps back.
+// #5: WOW very much to prove my point, I think I should scrap the whole localStorage thing and just an object data model.
+// #6: But.. idk figure this out before brainlessly attacking it more. I've wasted so much time, I need to work smarter
+// not harder..
 
 
 
@@ -96,6 +99,23 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
             data: {
                 storySelection: userSelection
             },
+            complete: function (res) {
+                const currentContext = res.responseJSON["0"]["context"];
+                console.log(currentContext)
+                localStorage.setItem("data", JSON.stringify(currentContext))
+                localStorage.setItem("story", currentContext["story"])
+                localStorage.setItem("storyID", currentContext["storyID"])
+                localStorage.setItem("scene", currentContext["scene"])
+                localStorage.setItem("sceneText", currentContext["sceneText"])
+                localStorage.setItem("options", JSON.stringify(currentContext["options"]))
+                localStorage.setItem("optionQuantity", currentContext["optionContext"])
+                // console.log(res.responseJSON["0"]["context"]["options"])
+                // Object.entries(currentContext).forEach((responseArrayIndice) => {
+                //     console.log(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
+                //     localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
+                // });
+                // APPARENTLY this function doesn't work.
+            }
         });
         else {
             // Call API (send selected option) with request for next scene information
@@ -105,11 +125,19 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
                     optionSelection: userSelection
                 },
                 complete: function (res) {
-                    console.log(res.responseText.context)
-                    const currentContext = res.responseText.context;
-                    Object.entries(currentContext).forEach((key, value) => {
-                        localStorage.setItem(key, value);
-                    });
+                    console.log(res)
+                    const currentContext = JSON.parse(res.responseJSON).context;
+                    localStorage.setItem("data", JSON.stringify(currentContext))
+                    localStorage.setItem("story", currentContext.story)
+                    localStorage.setItem("storyID", currentContext.storyID)
+                    localStorage.setItem("scene", currentContext.scene)
+                    localStorage.setItem("sceneText", currentContext.sceneText)
+                    localStorage.setItem("options", JSON.stringify(currentContext.options))
+                    localStorage.setItem("optionQuantity", currentContext.optionContext)
+                    // console.log(currentContext)
+                    // Object.entries(currentContext.context).forEach((responseArrayIndice) => {
+                    //     localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
+                    // });
                 }
             });
         }
@@ -251,27 +279,26 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
 function buttonUpdate(buttonType) {
     // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
     try {
+        const currentContext = JSON.parse(localStorage.getItem('data'));
+        console.log(currentContext.options)
         // console.log(currentContext.context["options"]["1"]["scene_text"])
         // if (parseInt(intra) === 1000 || typeof sceneOptions[1].option_text === 'undefined') {
         //     throw 'Reached end of scene chain';
         // }
         // Looping through buttons and injecting
-        const intra = localStorage.getItem('intra');
-        let ourSuperLazyCounter = 0;
-        const firstOption = 1
-        const currentContext = JSON.parse(localStorage.getItem('context'));
+        let counter = 0;
         const optionCount = localStorage.getItem('optionQuantity');
-        console.log(optionCount)
-        const sceneOptions = JSON.parse(localStorage.getItem('options'));
+        const sceneOptions = currentContext.options;
+        console.log(sceneOptions)
         console.log(JSON.parse(localStorage.getItem('options')))
         $('#optionBox').find(buttonType).each(function (index) {
-            if (ourSuperLazyCounter >= optionCount) {
+            if (counter >= optionCount) {
                 return false // I think this is to exit the function early if there is no more text to inject?
             }
             // let focus = String(index + 1);
             let focus = index + 1;
             this.innerText = (sceneOptions[focus]["option_text"]);
-            ourSuperLazyCounter++;
+            counter++;
         });
     } catch (report) {
         console.log(report);
@@ -317,21 +344,18 @@ $('#selectionBox').click(e => {
         e.stopPropagation();
         const selectedStory = e.target.id;
         const storyAPICall = callAPI.bind(this, selectedStory, false, true);
-        const buttonAnimDuration = 1500;
-        const spanifyCallBack = spanify.bind(this, true)
-        const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
+        // const buttonAnimDuration = 1500;
+        // const spanifyCallBack = spanify.bind(this, true)
+        // const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
         asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(res => {
-            const currentContext = res[0];
-            localStorage.setItem("context", JSON.stringify(currentContext))
-            // console.log(Object.entries(currentContext.context))
-            Object.entries(currentContext.context).forEach((responseArrayIndice) => {
-                localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
-            });
-            console.log(localStorage.getItem('options'))
+            const currentContext = res[0].context;
+            // localStorage.setItem("context", JSON.stringify(currentContext))
+            localStorage.setItem("optionQuantity", currentContext["optionQuantity"])
+            console.log(localStorage.getItem("optionQuantity"), currentContext["optionQuantity"])
             alignFix();
             switchToOptionBox();
             buttonUpdate('.optionSelector');
-        }).then(spanify).then(fadeTextIn).then(optionSwitchCallback)
+        }).then(spanify).then(fadeTextIn).then((asyncButtonSwitchAll))
     }
     else if (e.target.classList.contains('optionSelector')) {
         // Code to handle option selection
@@ -350,14 +374,6 @@ $('#selectionBox').click(e => {
             // the object.entries thing isn't quickly enough setting those values.. so localstorage is full of
             // old info.
             const currentContext = res[0]['context'];
-            // Object.entries(currentContext).forEach((key, value) => {
-            //     localStorage.setItem(key, value);
-            // });
-
-
-            // NEW UPDATE --
-            // So it seems that the api call is not returning the proper context...
-
             buttonUpdate('.optionSelector');
             const timeoutDuration = 1000;
             return new Promise(function (res, rej) {
@@ -367,3 +383,7 @@ $('#selectionBox').click(e => {
     }
 });
 $(document).ready(initialize);
+// console.log(Object.entries(currentContext.context))
+            // Object.entries(currentContext.context).forEach((responseArrayIndice) => {
+            //     localStorage.setItem(JSON.stringify(responseArrayIndice[0]), JSON.stringify(responseArrayIndice[1]))
+            // });
