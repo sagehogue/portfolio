@@ -1,5 +1,8 @@
 // TODOS
 // #1: Write function to bring initial state back so it can loop!
+// #2: Write logic to prevent multiple event listeners from firing. perhaps check for .disabled state?
+// #4: Error handling should probably be implemented.
+// #5: Gotta document my code!
 
 
 // COMPLETE MAIN FUNCTIONS
@@ -226,12 +229,18 @@ function spanify(firstCall = false) {
 }
 
 async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1000) {
+    const loopBtn = document.querySelector('.loopBtn')
     document.querySelectorAll(buttonType).forEach(function (current) {
         console.log(current)
         if (current.innerText) {
             buttonSwitch(current, duration);
         }
     });
+    if (loopBtn) {
+        const loopBtnDuration = duration * 2;
+        console.log(loopBtn);
+        buttonSwitch(loopBtn, loopBtnDuration) 
+    }
     return new Promise(function (resolve, reject) {
         setTimeout(resolve, duration);
     });
@@ -303,17 +312,28 @@ function buttonUpdate(buttonType) {
         const optionCount = currentContext.optionQuantity;
         const sceneOptions = currentContext.options;
         console.log(sceneOptions)
-        $('#optionBox').find(buttonType).each(function (index) {
-            if (counter >= optionCount) {
-                return false // I think this is to exit the function early if there is no more text to inject?
-            }
-            let focus = index + 1;
-            // let focus = String(index + 1);
-            console.log(sceneOptions)
-            console.log(sceneOptions[focus])
-            this.innerText = (sceneOptions[focus]["option_text"]);
-            counter++;
-        });
+        if (optionCount > 0) {
+            $('#optionBox').find(buttonType).each(function (index) {
+                if (counter >= optionCount) {
+                    return new Promise((res, rej) => {
+                        setTimeout(res, pauseDuration)
+                    })
+                }
+                let focus = index + 1;
+                // let focus = String(index + 1);
+                console.log(sceneOptions)
+                console.log(sceneOptions[focus])
+                this.innerText = (sceneOptions[focus]["option_text"]);
+                counter++;
+            });
+        } else {
+            const loopBtnMessage = 'Select Again'
+            $('#optionBox').empty()
+            const userPlayAgainBtn = document.createElement("button");
+            userPlayAgainBtn.setAttribute("class", "button loopBtn")
+            userPlayAgainBtn.innerText = loopBtnMessage
+            document.querySelector('#optionBox').appendChild(userPlayAgainBtn)
+        }
         return new Promise((res, rej) => {
             setTimeout(res, pauseDuration)
         })
@@ -384,19 +404,19 @@ $('#selectionBox').click(e => {
         const optionAPICall = callAPI.bind(this, selectedOption)
         const spanThenFade = fadeTextIn.bind(this, true);
         asyncButtonSwitchAll('.optionSelector').then(fadeTextOut).then(optionAPICall).then(res => {
-            // The code below here doesn't work as desired yet - need to 
-            // ensure sequencing. fadetextin is performing with the same text as
-            // when it painted the first scene.
-            // fadeTextIn is getting called with the old shit... figured out why though.
-            // the object.entries thing isn't quickly enough setting those values.. so localstorage is full of
-            // old info.
             const currentContext = res[0]['context'];
+            // if (currentContext['optionQuantity'] === "0") {}
+            // Make the logic for checking if optionQuantity is 0 a subfunction of button update.
             buttonUpdate('.optionSelector');
             const timeoutDuration = 1000;
             return new Promise(function (res, rej) {
                 setTimeout(res, timeoutDuration)
             })
         }).then(spanify).then(fadeTextIn).then(asyncButtonSwitchAll)
+    } else if (e.target.classList.contains('loopBtn')) {
+        e.stopPropagation();
+        // CODE RESET
+        location.reload();
     }
 });
 $(document).ready(initialize);
