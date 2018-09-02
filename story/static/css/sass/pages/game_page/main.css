@@ -1,0 +1,92 @@
+html {
+  font-size: 62.5%; }
+
+* {
+  box-sizing: border-box;
+  margin: 0; }
+
+body {
+  height: 100vh;
+  background: black;
+  font-family: 'Lobster', cursive;
+  display: grid;
+  grid-template-columns: 1fr 9fr 1fr;
+  grid-template-rows: 1fr 9fr 1fr; }
+
+hr {
+  background-color: inherit;
+  border-color: lightslategray; }
+
+#storyWelcome {
+  color: darkslategray;
+  padding: 10px 20px; }
+
+.word {
+  display: inline;
+  opacity: 0; }
+
+#storyWrapper {
+  overflow: hidden;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  color: lightseagreen;
+  border: #7f7f7f inset medium;
+  display: grid;
+  grid-template-rows: 3fr 6fr 1fr;
+  grid-template-columns: repeat(8, 1fr);
+  min-width: 100%; }
+
+#mainAnimBox {
+  grid-column: 1 / -1;
+  grid-row: 2 / 3; }
+
+#textBox {
+  box-sizing: content-box;
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+  text-align: center;
+  word-wrap: break-spaces;
+  overflow: auto;
+  width: 100%;
+  padding-right: 20px; }
+
+#selectionBox {
+  grid-column: 1 / -1;
+  grid-row: 3 / 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; }
+
+#optionBox {
+  /*display: flex;*/
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+  overflow: hidden;
+  height: inherit; }
+
+#storyButtonBox {
+  display: flex;
+  justify-content: space-around;
+  min-width: 40%; }
+
+.button {
+  background: transparent;
+  border: lightslategray outset medium;
+  color: lightslategray;
+  padding: 7px 14px; }
+
+.optionSelector {
+  /*display: none;*/
+  opacity: 0;
+  max-height: 50%;
+  overflow: auto; }
+
+.storySelector {
+  opacity: 0; }
+
+.btn {
+  opacity: 0; }
+
+/*# sourceMappingURL=main.css.map */

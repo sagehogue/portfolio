@@ -1,0 +1,21 @@
+.button {
+    background: transparent;
+    border: lightslategray outset medium;
+    color: lightslategray;
+    padding: 7px 14px;
+}
+
+.optionSelector {
+    /*display: none;*/
+    opacity: 0;
+    max-height: 50%;
+    overflow: auto;
+}
+
+.storySelector {
+    opacity: 0;
+}
+
+.btn {
+    opacity: 0;
+}

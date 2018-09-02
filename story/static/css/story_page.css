@@ -135,6 +135,10 @@ hr {
     opacity: 0;
 }
 
+.btn {
+    opacity: 0;
+}
+
 #storyWelcome {
     color: darkslategray;
     padding: 10px 20px;

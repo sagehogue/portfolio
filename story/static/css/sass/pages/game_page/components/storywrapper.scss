@@ -1,0 +1,52 @@
+#storyWrapper {
+    overflow: hidden;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    color: lightseagreen;
+    border: #7f7f7f inset medium;
+    display: grid;
+    grid-template-rows: 3fr 6fr 1fr;
+    grid-template-columns: repeat(8, 1fr);
+    min-width: 100%
+    /*box-shadow: 5px 10px */
+}
+
+#mainAnimBox {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+}
+
+#textBox {
+    box-sizing: content-box;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    text-align: center;
+    word-wrap: break-spaces;
+    overflow: auto;
+    width: 100%;
+    padding-right: 20px;
+}
+
+#selectionBox {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#optionBox {
+    /*display: flex;*/
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    overflow: hidden;
+    height: inherit;
+}
+
+#storyButtonBox {
+    display: flex;
+    justify-content: space-around;
+    min-width: 40%;
+}
