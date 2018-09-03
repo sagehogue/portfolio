@@ -110,10 +110,9 @@ async function fadeTextOut(classToFade = '.word') {
     });
 }
 
-async function textFadeOutGroup(classToFade = '.word') {
+async function textFadeOutGroup(classToFade = '.word', duration=2500) {
     const words = $($(classToFade).get());
-    const vals = animValueCalc(classToFade);
-    duration = vals[1]
+    // const vals = animValueCalc(classToFade);
     words.each(function () {
         $(this).animate({ 'opacity': 0 }, duration, function () {
         });
@@ -272,8 +271,7 @@ function spanify(firstCall = false) {
     }
 }
 
-async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1000, updateFirst = false) {
-    if (updateFirst) { const updatedButtons = await buttonUpdate };
+async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1000) {
     const loopBtn = document.querySelector('.loopBtn')
     document.querySelectorAll(buttonType).forEach(function (current) {
         if (current.innerText) {
@@ -524,12 +522,12 @@ $('#selectionBox').click(e => {
             e.stopPropagation();
             // CODE RESET
             let resetState = function () {
-                $('#textBox').text('Select your experience');
-                alignFix(true);
-                switchToOptionBox(true);
-                const fadeOutDuration = 1000
-                buttonSwitch(document.querySelector('.loopBtn'), fadeOutDuration)
                 return new Promise(function (res, rej) {
+                    $('#textBox').text('Select your experience');
+                    alignFix(true);
+                    switchToOptionBox(true);
+                    const fadeOutDuration = 1500
+                    buttonSwitch(document.querySelector('.loopBtn'), fadeOutDuration)
                     setTimeout(res, fadeOutDuration)
                 })
                 // initialize();

@@ -9,7 +9,7 @@ html {
 
   body {
     height: 100vh;
-    background: black;
+    background: $color-grey-light;
     font-family: 'Lobster', cursive;
     display: grid;
     grid-template-columns: 1fr 9fr 1fr;
