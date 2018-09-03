@@ -23,7 +23,8 @@ hr {
 
 .word {
   display: inline;
-  opacity: 0; }
+  opacity: 0;
+  font-size: 1.5rem; }
 
 #storyWrapper {
   overflow: hidden;
@@ -31,6 +32,7 @@ hr {
   grid-row: 2 / 3;
   color: lightseagreen;
   border: #7f7f7f inset medium;
+  border-radius: 3px;
   display: grid;
   grid-template-rows: 3fr 6fr 1fr;
   grid-template-columns: repeat(8, 1fr);
@@ -64,7 +66,8 @@ hr {
   align-items: center;
   justify-content: space-around;
   overflow: hidden;
-  height: inherit; }
+  height: inherit;
+  width: 100%; }
 
 #storyButtonBox {
   display: flex;
@@ -72,21 +75,26 @@ hr {
   min-width: 40%; }
 
 .button {
-  background: transparent;
+  text-align: center;
+  display: inline-block;
+  background-color: rgba(245, 255, 250, 0.85);
   border: lightslategray outset medium;
-  color: lightslategray;
-  padding: 7px 14px; }
+  color: rgba(3, 3, 3, 0.8);
+  font-weight: 500;
+  padding: 2rem 4rem;
+  opacity: 0;
+  border-radius: .5rem;
+  transition: all .2s; }
+
+.buttonOpaque {
+  opacity: 1; }
 
 .optionSelector {
-  /*display: none;*/
   opacity: 0;
   max-height: 50%;
   overflow: auto; }
 
 .storySelector {
-  opacity: 0; }
-
-.btn {
-  opacity: 0; }
+  font-weight: 600; }
 
 /*# sourceMappingURL=main.css.map */
