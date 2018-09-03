@@ -334,63 +334,7 @@ function buttonSwitch(button, buttonAnimDuration = 1500) {
     }
 }
 
-// pass it '.optionSelector' or '.storySelector' to have it operate on the respective type.
-function buttonUpdate(buttonType) {
-    // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
-    try {
-        // console.log(currentContext.options)
-        // console.log(currentContext.context["options"]["1"]["scene_text"])
-        // if (parseInt(intra) === 1000 || typeof sceneOptions[1].option_text === 'undefined') {
-        //     throw 'Reached end of scene chain';
-        // }
-        // Looping through buttons and injecting
-        // if (optionCount > 0) {
-        //     const buttonContainer = document.querySelector('#optionBox');
-        //     buttonContainer.innerHTML = '';
-        //     btnCounter = 1;
-        //     while (btnCounter <= optionCount) {
-        //         let newButton = document.createElement('button');
-        //         console.log(sceneOptions[btnCounter])
-        //         newButton.setAttribute("type", "button");
-        //         newButton.setAttribute("id", 'optionBtn' + btnCounter);
-        //         newButton.setAttribute("class", "optionSelector button");
-        //         newButton.setAttribute("value", sceneOptions[btnCounter].option_text)
-        //         newButton.setAttribute("", sceneOptions[btnCounter].option_text)
-        //         buttonContainer.appendChild(newButton);
-        //         btnCounter++
-        //     }
-
-
-        // (Object.entries(currentContext.options)).forEach(function (entry) {
-        //     console.log(entry)
-        //     let newButton = document.createElement('button');
-        //     newButton.setAttribute("type", "button");
-        //     newButton.setAttribute("id", 'optionBtn' + entry[0]);
-        //     newButton.setAttribute("class", "optionSelector button");
-        //     newButton.setAttribute("innerText", entry[1].option_text)
-        //     console.log(newButton);
-        //     buttonContainer.appendChild(newButton);
-        // })
-        // $('#optionBox').find(buttonType).each(function (index) {
-        //     if (counter >= optionCount) {
-        //         return new Promise((res, rej) => {
-        //             setTimeout(res, pauseDuration)
-        //         })
-        //     }
-        //     let focus = index + 1;
-        //     // let focus = String(index + 1);
-        //     console.log(sceneOptions)
-        //     console.log(sceneOptions[focus])
-        //     this.innerText = (sceneOptions[focus]["option_text"]);
-        //     counter++;
-        // });
-        const currentContext = JSON.parse(localStorage.getItem('data'));
-        const pauseDuration = 0;
-        let counter = 0;
-        const optionCount = currentContext.optionQuantity;
-        const sceneOptions = currentContext.options;
-        console.log(sceneOptions)
-        if (optionCount > 0) {
+function oldButtonUpdate(buttonType) {
             $('#optionBox').find(buttonType).each(function (index) {
                 // if (counter = optionCount) {
                 //     return new Promise((res, rej) => {
@@ -410,6 +354,71 @@ function buttonUpdate(buttonType) {
                 counter++;
                 
             });
+        }
+        
+        // pass it '.optionSelector' or '.storySelector' to have it operate on the respective type.
+        function buttonUpdate(buttonType) {
+            // console.log(`Context: ${currentContext}\nOption Count: ${optionCount}\nintra: ${intra}`);
+            try {
+                // console.log(currentContext.options)
+                // console.log(currentContext.context["options"]["1"]["scene_text"])
+                // if (parseInt(intra) === 1000 || typeof sceneOptions[1].option_text === 'undefined') {
+            //     throw 'Reached end of scene chain';
+            // }
+            // Looping through buttons and injecting
+            const currentContext = JSON.parse(localStorage.getItem('data'));
+            const pauseDuration = 0;
+            let counter = 0;
+            const optionCount = currentContext.optionQuantity;
+            const sceneOptions = currentContext.options;
+            const buttonContainer = document.querySelector('#optionBox')
+            buttonContainer.innerHTML = '';
+            console.log(sceneOptions)
+            if (optionCount > 0) {
+                // oldButtonUpdate();
+                (Object.entries(currentContext.options)).forEach(function (entry) {
+                    console.log(entry[1].option_text)
+                    innerButtonString = `<button type='button' class='optionSelector button' id=optionBtn${entry[0]}>
+                    ${entry[1].option_text}</button>`
+                    const newButtonWrapper = document.createElement('div');
+                    newButtonWrapper.setAttribute('class', 'button--wrapper')
+                    // let newButton = document.createElement('button');
+                    // newButton.setAttribute("type", "button");
+                    // newButton.setAttribute("id", 'optionBtn' + entry[0]);
+                    // newButton.setAttribute("class", "optionSelector button");
+                    // newButton.setAttribute("innerHTML", entry[1].option_text)
+                    // newButton.setAttribute("innerText", entry[1].option_text)
+                    // $('#' + newButton.getAttribute('id')).html(entry[1].option_text)
+                    newButtonWrapper.innerHTML = innerButtonString;
+                    buttonContainer.appendChild(newButtonWrapper);
+                })
+                // if (optionCount > 0) {
+                    //     const buttonContainer = document.querySelector('#optionBox');
+                //     buttonContainer.innerHTML = '';
+                //     btnCounter = 1;
+                //     while (btnCounter <= optionCount) {
+                    //             let newButton = document.createElement('button');
+                    //             console.log(sceneOptions[btnCounter])
+                    //             newButton.setAttribute("type", "button");
+                    //             newButton.setAttribute("id", 'optionBtn' + btnCounter);
+                // newButton.setAttribute("class", "optionSelector button");
+                // newButton.setAttribute("value", sceneOptions[btnCounter].option_text)
+                // newButton.setAttribute("", sceneOptions[btnCounter].option_text)
+                // buttonContainer.appendChild(newButton);
+                // btnCounter++
+        // $('#optionBox').find(buttonType).each(function (index) {
+        //     if (counter >= optionCount) {
+        //         return new Promise((res, rej) => {
+        //             setTimeout(res, pauseDuration)
+        //         })
+        //     }
+        //     let focus = index + 1;
+        //     // let focus = String(index + 1);
+        //     console.log(sceneOptions)
+        //     console.log(sceneOptions[focus])
+        //     this.innerText = (sceneOptions[focus]["option_text"]);
+        //     counter++;
+        // });
         } else {
             const loopBtnMessage = 'Select Again'
             $('#optionBox').empty()

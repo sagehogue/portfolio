@@ -1,0 +1,39 @@
+// @keyframes moveInLeft {
+//     0% {
+//       opacity: 0;
+//       text-decoration: none;
+//       transform: translateX(-10rem);
+//     }
+//     80% {
+//       transform: translateX(1rem) skewX(30deg);
+//     }
+//     90% {
+//       text-decoration: none;
+//       text-decoration: transparent;
+//     }
+//     100% {
+//       opacity: 1;
+//       transform: translate(0) skewX(0);
+//       text-decoration: $color-typo-1;
+//       text-decoration-line: underline;
+//     }
+//   }
+// -webkit-animation-name: spin, scale
+// -webkit-animation-duration: 2s, 4s
+@keyframes opaqueHover {
+    100% {
+        transform: translateY(-3rem);
+        background-color: rgba($btn-bg-color-1, 1);
+        color: rgba($color-type-main, 1);
+        font-weight: 600;
+    }
+}
+
+@keyframes drift {
+    50% {
+        transform: translateY(-1.5rem)
+    }
+    100% {
+        transform: translateY(1.5rem)
+    }
+}

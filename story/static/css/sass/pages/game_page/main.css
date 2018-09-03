@@ -1,3 +1,14 @@
+@keyframes opaqueHover {
+  100% {
+    transform: translateY(-3rem);
+    background-color: mintcream;
+    color: #0c080f;
+    font-weight: 600; } }
+@keyframes drift {
+  50% {
+    transform: translateY(-1.5rem); }
+  100% {
+    transform: translateY(1.5rem); } }
 html {
   font-size: 62.5%; }
 
@@ -7,7 +18,7 @@ html {
 
 body {
   height: 100vh;
-  background: #D7D6D6;
+  background: rgba(141, 141, 146, 0.9);
   font-family: 'Lobster', cursive;
   display: grid;
   grid-template-columns: 1fr 9fr 1fr;
@@ -16,7 +27,8 @@ body {
 .word {
   display: inline;
   opacity: 0;
-  font-size: 1.5rem; }
+  font-size: 1.5rem;
+  color: #0c080f; }
 
 #storyWrapper {
   grid-column: 2 / 3;
@@ -36,8 +48,13 @@ body {
 .textWrapper {
   grid-column: 1 / -1;
   grid-row: 1 / 2;
-  border: #7f7f7f solid medium;
-  border-radius: 3px; }
+  background-color: #D7D6D6;
+  border-radius: 5px;
+  width: 75%;
+  margin: 0 auto; }
+
+#storyWelcome {
+  margin: auto 0; }
 
 #textBox {
   box-sizing: content-box;
@@ -53,15 +70,13 @@ body {
   grid-row: 3 / 4;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden; }
+  align-items: center; }
 
 #optionBox {
   /*display: flex;*/
   display: none;
   align-items: center;
   justify-content: space-around;
-  overflow: hidden;
   height: inherit;
   width: 100%; }
 
@@ -75,12 +90,18 @@ body {
   display: inline-block;
   background-color: rgba(245, 255, 250, 0.85);
   border: lightslategray outset medium;
-  color: rgba(3, 3, 3, 0.8);
+  color: rgba(12, 8, 15, 0.6);
   font-weight: 500;
   padding: 2rem 4rem;
   opacity: 0;
   border-radius: .5rem;
   transition: all .2s; }
+  .button--wrapper {
+    transition: all 0.2s; }
+  .button:hover {
+    animation: opaqueHover 2s forwards; }
+    .button:hover button--wrapper {
+      animation: drift 4s alternate infinite reverse; }
 
 .buttonOpaque {
   opacity: 1; }

@@ -3,13 +3,26 @@
     display: inline-block;
     background-color: rgba($btn-bg-color-1, .85);
     border: lightslategray outset medium;
-    color: rgba(3,3,3,.8);
+    color: rgba($color-type-main, .6);
     font-weight: 500;
     padding: 2rem 4rem;
     opacity: 0;
     border-radius: .5rem;
     transition: all .2s;
+    &--wrapper {
+        transition: all .2s
+    }
+    &:hover {
+        // NAMED ANIMS NOT NECESSARY
+        // Rework into transitions
+        animation: opaqueHover 2s forwards;
+        button--wrapper {
+            animation: drift 4s alternate infinite reverse;
+        }
+    }
 }
+
+
 
 .buttonOpaque {
     opacity: 1;

@@ -18,11 +18,14 @@
 .textWrapper {
     grid-column: 1 / -1;
     grid-row: 1 / 2;
-    border: #7f7f7f solid medium;
-    border-radius: 3px;
+    background-color: $color-grey-light;
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto;
 }
 
 #storyWelcome {
+    margin: auto 0;
 }
 
 #textBox {
@@ -42,7 +45,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 #optionBox {
@@ -50,7 +52,6 @@
     display: none;
     align-items: center;
     justify-content: space-around;
-    overflow: hidden;
     height: inherit;
     width: 100%;
 }
