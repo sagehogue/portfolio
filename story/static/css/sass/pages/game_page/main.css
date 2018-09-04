@@ -1,14 +1,16 @@
 @keyframes opaqueHover {
   100% {
-    transform: translateY(-3rem);
+    transform: translateY(-1.5rem);
     background-color: mintcream;
     color: #0c080f;
     font-weight: 600; } }
 @keyframes drift {
   50% {
-    transform: translateY(-1.5rem); }
+    transform: translateY(0rem); }
+  75% {
+    transform: translateY(-0.5rem); }
   100% {
-    transform: translateY(1.5rem); } }
+    transform: translateY(0.25rem); } }
 html {
   font-size: 62.5%; }
 
@@ -22,7 +24,7 @@ body {
   font-family: 'Lobster', cursive;
   display: grid;
   grid-template-columns: 1fr 9fr 1fr;
-  grid-template-rows: 1fr 9fr 1fr; }
+  grid-template-rows: 1fr 5fr 1fr; }
 
 .word {
   display: inline;
@@ -38,7 +40,6 @@ body {
   grid-template-rows: 3fr 6fr 1fr;
   grid-template-columns: repeat(8, 1fr);
   min-width: 100%;
-  overflow: hidden;
   /*box-shadow: 5px 10px */ }
 
 #mainAnimBox {
@@ -51,7 +52,8 @@ body {
   background-color: #D7D6D6;
   border-radius: 5px;
   width: 75%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  box-shadow: 1px 3px 3px 1px rgba(5, 5, 5, 0.3); }
 
 #storyWelcome {
   margin: auto 0; }
@@ -88,20 +90,26 @@ body {
 .button {
   text-align: center;
   display: inline-block;
-  background-color: rgba(245, 255, 250, 0.85);
+  background-color: rgba(245, 255, 250, 0.9);
   border: lightslategray outset medium;
   color: rgba(12, 8, 15, 0.6);
   font-weight: 500;
   padding: 2rem 4rem;
   opacity: 0;
   border-radius: .5rem;
-  transition: all .2s; }
+  transition: all 1s;
+  box-shadow: 1px 3px 3px 1px rgba(5, 5, 5, 0.3); }
   .button--wrapper {
-    transition: all 0.2s; }
-  .button:hover {
-    animation: opaqueHover 2s forwards; }
-    .button:hover button--wrapper {
-      animation: drift 4s alternate infinite reverse; }
+    margin-bottom: 1rem; }
+  .button:hover .button, .button--wrapper:hover .button {
+    transform: scale(1.1) translateY(-1.5rem);
+    background-color: mintcream;
+    box-shadow: 2px 6px 6px 2px rgba(5, 5, 5, 0.15); }
+
+#selectionBox:hover .button:not(:hover) {
+  transform: scale(0.95) translateY(0.25rem);
+  background-color: rgba(245, 255, 250, 0.5);
+  box-shadow: 1px 2px 1px 1px rgba(5, 5, 5, 0.15); }
 
 .buttonOpaque {
   opacity: 1; }

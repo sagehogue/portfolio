@@ -294,11 +294,14 @@ async function retrieveStoryButtons(response) {
     const storyArray = Object.entries(storyObject);
     const buttonContainer = document.querySelector('#storyButtonBox');
     storyArray.forEach((currentArray) => {
+        const buttonWrapper = document.createElement('div');
+        buttonWrapper.setAttribute('class', 'button--wrapper')
         let newButton = document.createElement('button');
         newButton.setAttribute("type", "button");
         newButton.setAttribute("id", currentArray[1]);
         newButton.setAttribute("class", "storySelector button");
-        buttonContainer.appendChild(newButton);
+        buttonWrapper.appendChild(newButton);
+        buttonContainer.appendChild(buttonWrapper);
         $('#' + newButton.id).text(newButton.id);
     });
 }

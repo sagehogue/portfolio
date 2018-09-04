@@ -7,7 +7,7 @@
     grid-template-rows: 3fr 6fr 1fr;
     grid-template-columns: repeat(8, 1fr);
     min-width: 100%;
-    overflow: hidden;
+    // overflow: hidden;
     /*box-shadow: 5px 10px */
 }
 
@@ -22,6 +22,7 @@
     border-radius: 5px;
     width: 75%;
     margin: 0 auto;
+    box-shadow: 1px 3px 3px 1px rgba($color-black, .3);
 }
 
 #storyWelcome {

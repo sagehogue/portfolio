@@ -22,7 +22,7 @@
 // -webkit-animation-duration: 2s, 4s
 @keyframes opaqueHover {
     100% {
-        transform: translateY(-3rem);
+        transform: translateY(-1.5rem);
         background-color: rgba($btn-bg-color-1, 1);
         color: rgba($color-type-main, 1);
         font-weight: 600;
@@ -31,9 +31,12 @@
 
 @keyframes drift {
     50% {
-        transform: translateY(-1.5rem)
+        transform: translateY(0rem)
+    }
+    75% {
+        transform: translateY(-.5rem)
     }
     100% {
-        transform: translateY(1.5rem)
+        transform: translateY(.25rem)
     }
 }
