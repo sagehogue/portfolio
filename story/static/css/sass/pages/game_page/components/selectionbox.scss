@@ -1,0 +1,22 @@
+#selectionBox {
+    grid-column: 1 / -1;
+    grid-row: 4 / 5;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+}
+#optionBox {
+    /*display: flex;*/
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    height: inherit;
+    width: 100%;
+}
+
+#storyButtonBox {
+    display: flex;
+    justify-content: space-around;
+    min-width: 40%;
+}

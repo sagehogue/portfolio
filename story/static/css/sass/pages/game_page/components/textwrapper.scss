@@ -1,0 +1,11 @@
+#textBox {
+    grid-column: 1 / -1;
+    grid-row: 1 / 3;
+    box-sizing: content-box;
+    text-align: center;
+    word-wrap: break-spaces;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    padding-right: 20px;
+}

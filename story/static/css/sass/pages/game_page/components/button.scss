@@ -8,31 +8,33 @@
     padding: 2rem 4rem;
     opacity: 0;
     border-radius: .5rem;
-    transition: all 1s;
-    box-shadow: 1px 3px 3px 1px rgba($color-black, .3);
+    transition: all .6s; // box-shadow: 2px .5rem .5rem 2px rgba($color-black, .3);
     &--wrapper {
         // transition: all 3s;
         margin-bottom: 1rem;
     }
-    &:hover, 
+    &:hover,
     &--wrapper:hover {
         // NAMED ANIMS NOT NECESSARY
         // Rework into transitions
         .button {
             transform: scale(1.1) translateY(-1.5rem);
             background-color: rgba($btn-bg-color-1, 1);
-            box-shadow: 2px 6px 6px 2px rgba($color-black, .15)
-            // animation: drift alternate 1s infinite
+            box-shadow: 4px 1rem 1rem 4px rgba($color-black, .15) // animation: drift alternate 1s infinite
+            &--wrapper {
+                transform: scale(1.15) translateY(-1.5rem)
+            }
         }
     }
+    &:active {
+        box-shadow: 1px 3px 3px 1px rgba($color-black, .5);
+    }
+    &:not(:hover) {
+        transform: scale(.95) translateY(.25rem);
+        background-color: rgba($btn-bg-color-1, .5);
+        box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15)
+    }
 }
-#selectionBox:hover .button:not(:hover) {
-    transform: scale(.95) translateY(.25rem);
-    background-color: rgba($btn-bg-color-1, .5);
-    box-shadow: 1px 2px 1px 1px rgba($color-black, .15)
-}
-
-
 
 .buttonOpaque {
     opacity: 1;
@@ -46,5 +48,4 @@
 
 .storySelector {
     font-weight: 600;
-
 }
