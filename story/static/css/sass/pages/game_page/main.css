@@ -106,8 +106,9 @@ body {
   .button:hover .button, .button--wrapper:hover .button {
     transform: scale(1.1) translateY(-1.5rem);
     background-color: mintcream;
-    box-shadow: 4px 1rem 1rem 4px rgba(5, 5, 5, 0.15) .button:hover .button, .button--wrapper:hover .button --wrapper;
-      box-shadow-transform: scale(1.15) translateY(-1.5rem); }
+    box-shadow: 4px 1rem 1rem 4px rgba(5, 5, 5, 0.15); }
+    .button:hover .button--wrapper, .button--wrapper:hover .button--wrapper {
+      transform: scale(1.15) translateY(-1.5rem); }
   .button:active {
     box-shadow: 1px 3px 3px 1px rgba(5, 5, 5, 0.5); }
   .button:not(:hover) {

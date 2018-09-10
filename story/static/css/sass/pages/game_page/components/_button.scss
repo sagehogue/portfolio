@@ -20,9 +20,9 @@
         .button {
             transform: scale(1.1) translateY(-1.5rem);
             background-color: rgba($btn-bg-color-1, 1);
-            box-shadow: 4px 1rem 1rem 4px rgba($color-black, .15) // animation: drift alternate 1s infinite
+            box-shadow: 4px 1rem 1rem 4px rgba($color-black, .15); // animation: drift alternate 1s infinite
             &--wrapper {
-                transform: scale(1.15) translateY(-1.5rem)
+                transform: scale(1.15) translateY(-1.5rem);
             }
         }
     }
@@ -32,7 +32,7 @@
     &:not(:hover) {
         transform: scale(.95) translateY(.25rem);
         background-color: rgba($btn-bg-color-1, .5);
-        box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15)
+        box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15);
     }
 }
 
