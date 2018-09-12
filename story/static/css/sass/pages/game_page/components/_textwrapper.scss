@@ -1,3 +1,13 @@
+.textWrapper {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    background-color: $color-grey-light;
+    border-radius: 5px;
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: 1px 3px 3px 1px rgba($color-black, .3);
+}
+
 #textBox {
     grid-column: 1 / -1;
     grid-row: 1 / 3;
