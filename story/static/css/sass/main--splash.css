@@ -78,6 +78,9 @@ body {
     transform: translateY(0.4rem); }
   100% {
     transform: translateY(0); } }
+/* 
+Rewrite this menu using absolute positioning so that you can utilize z-index for a prettier animation.
+*/
 .menu {
   font-size: 2rem;
   font-weight: 900;
@@ -166,6 +169,10 @@ body {
   background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.65), rgba(40, 180, 133, 0.65)), url("../../img/img1.jpg");
   background-size: cover;
   background-position: bottom; }
+
+.header {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr; }
 
 /* Okay so current goal is to actually make some interesting buttons
 Using different state effects. :after, :activate, :visited etc

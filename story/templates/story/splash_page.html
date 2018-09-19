@@ -1,73 +1,54 @@
-{# Current Status : Completed page load header anims #}
-{# TODOS #}
-{# Complete header #}
-{# Thinking of using another background image like in natours #}
-{# Utilize another linear gradient over the image to increase #}
-{# typeface readability. I like the page padding of natours & header #}
-{# design. #}
+{# Current Status : Completed page load header anims #} 
+{# TODOS #} 
+{# Complete header #} 
+{# Thinking of using another background image like in natours #} 
+{# Utilize another linear gradient over the image to increase #} 
+{# typeface readability. I like the page padding of natours & header #} 
+{# design. #} 
+{# Create natours style cards for about me and navigation #} 
+{# possibly featuring buttons to other pages #} 
+{% extends 'story/base.html' %} 
+{% load staticfiles %} {% block head_additions %}
 
-{# Create natours style cards for about me and navigation #}
-{# possibly featuring buttons to other pages #}
-{% extends 'story/base.html' %}
-{% load staticfiles %}
-{% block head_additions %}<title>Sage Page</title>{% endblock %}
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'css/sass/main--splash.css' %}">{% endblock %}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-{% block header %}
-    <header class="header">
-        <div class="heading__box">
-            <h1 class="heading-main">
-                <span class="heading-main--sub text__opaque">Welcome to the</span>
-                <span class="heading-main--main">Sage Page</span>
-            </h1>
-        </div>
-        <div class="menu">
-            My Work
-            <a href='{% url 'post_list' %}' class="menu__btn menu__btn--left">
-                Blog
-            </a>
-            <a href="{% url 'game_page' %}" class="menu__btn menu__btn--top">
-                Vistelse
-            </a>
-            <a href="#" class="menu__btn menu__btn--right">
-                Nowherelink
-            </a>
-            <nav class="menu__btn menu__nav">
-                <a target="_blank" href="https://github.com/sagehogue" class="menu__link"><i
-                        class="fab fa-github-square menu__link--media-icon"></i></a>
-                <a target="_blank" href="https://www.linkedin.com/in/sage-hogue-0431a7146/" class="menu__link"><i
-                        class="fab fa-linkedin menu__link--media-icon"></i></a>
-                <a target="_blank" href="https://stackoverflow.com/users/9855918/sage-hogue?tab=profile"
-                   class="menu__link"><i class="fab fa-stack-overflow menu__link--media-icon"></i></a>
-                <a target="_blank" href="https://twitter.com/sagemph" class="menu__link"><i
-                        class="fab fa-twitter menu__link--media-icon"></i></a>
-                <a href="#" class="menu__link menu__link--email"><i
-                        class="far fa-envelope menu__link--media-icon"></i></a>
-            </nav>
-        </div>
-    </header>
-{% endblock %}
-{% block nav %}
-{% endblock %}
-{% block content %}
-    <div id="contentWrapper">
+<!-- Definitely need to get a linter for jinja -->
+<title>Sage Page</title>{% endblock %} {% block styles %}
 
-        {#            <a href="#">#}
-        {#                <div class="btn">#}
-        {#                    About#}
-        {#                </div>#}
-        {#            </a> currently no about page...#}
-        <div id="bottomNav">
-            {#            social media links go here #}
-        </div>
+<link rel="stylesheet" href="{% static 'css/sass/main--splash.css' %}">{% endblock %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+    crossorigin="anonymous"> {% block header %}
+<header class="header">
+    <div class="heading__box">
+        <h1 class="heading-main">
+            <span class="heading-main--sub text__opaque">Welcome to the</span>
+            <span class="heading-main--main">Sage Page</span>
+        </h1>
     </div>
-{% endblock %}
-{% block script %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../static/js/story_page/getCookie.js"></script>
-    <script src="../../static/js/anime.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../../static/js/main.js"></script>
-{% endblock %}
+    <div class="menu">
+        My Work
+    </div>
+        <a href="{% url 'post_list' %}" class="menu__btn menu__btn--left">
+            Blog
+        </a>
+        <a href="{% url 'game_page' %}" class="menu__btn menu__btn--top">
+            Vistelse
+        </a>
+        <a href="#" class="menu__btn menu__btn--right">
+            Nowherelink
+        </a>
+        <nav class="menu__btn menu__nav">
+            <a target="_blank" href="https://github.com/sagehogue" class="menu__link"><i class="fab fa-github-square menu__link--media-icon"></i></a>
+            <a target="_blank" href="https://www.linkedin.com/in/sage-hogue-0431a7146/" class="menu__link"><i class="fab fa-linkedin menu__link--media-icon"></i></a>
+            <a target="_blank" href="https://stackoverflow.com/users/9855918/sage-hogue?tab=profile" class="menu__link"><i
+                    class="fab fa-stack-overflow menu__link--media-icon"></i></a>
+            <a target="_blank" href="https://twitter.com/sagemph" class="menu__link"><i class="fab fa-twitter menu__link--media-icon"></i></a>
+            <a href="#" class="menu__link menu__link--email"><i class="far fa-envelope menu__link--media-icon"></i></a>
+        </nav></header>
+{% endblock %} {% block nav %} {% endblock %} {% block content %}
+<div id="contentWrapper">
+</div>
+{% endblock %} {% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="../../static/js/story_page/getCookie.js"></script>
+<script src="../../static/js/anime.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="../../static/js/main.js"></script> {% endblock %}
