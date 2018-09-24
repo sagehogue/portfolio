@@ -8,9 +8,9 @@
 {# Create natours style cards for about me and navigation #}
 {# possibly featuring buttons to other pages #}
 {% extends 'story/base.html' %}
-{% load staticfiles %} 
+{% load staticfiles %}
 {% block head_additions %}
-<title>Sage Page</title>{% endblock %} 
+<title>Sage Page</title>{% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="{% static 'css/sass/main--splash.css' %}">
 {% endblock %}
@@ -23,18 +23,18 @@
             <span class="heading-main--main">Sage Page</span>
         </h1>
     </div>
-    <div class="menu">
+    <div class="menu noFlicker">
         My Work
-        <a href="{% url 'post_list' %}" class="menu__btn menu__btn--left">
+        <a href="{% url 'post_list' %}" class="menu__btn menu__btn--left noFlicker">
             Blog
         </a>
-        <a href="{% url 'game_page' %}" class="menu__btn menu__btn--top">
+        <a href="{% url 'game_page' %}" class="menu__btn menu__btn--top noFlicker">
             Vistelse
         </a>
-        <a href="#" class="menu__btn menu__btn--right">
+        <a href="#" class="menu__btn menu__btn--right noFlicker">
             Nowherelink
         </a>
-        <nav class="menu__btn menu__nav">
+        <nav class="menu__btn menu__nav noFlicker">
             <a target="_blank" href="https://github.com/sagehogue" class="menu__link"><i class="fab fa-github-square menu__link--media-icon"></i></a>
             <a target="_blank" href="https://www.linkedin.com/in/sage-hogue-0431a7146/" class="menu__link"><i class="fab fa-linkedin menu__link--media-icon"></i></a>
             <a target="_blank" href="https://stackoverflow.com/users/9855918/sage-hogue?tab=profile" class="menu__link"><i

@@ -9,6 +9,9 @@ body {
   padding: 3rem;
   background-color: #fff; }
 
+.noFlicker {
+  -webkit-backface-visibility: hidden; }
+
 .heading__box {
   padding-top: 20vh;
   grid-column: 2 / 5;
@@ -95,10 +98,6 @@ body {
     transform: translateY(0.4rem); }
   100% {
     transform: translateY(0); } }
-/* 
-Rewrite this menu using absolute positioning so that you can utilize z-index for a prettier animation.
-All the menu content was originally nested inside of a menu div.
-*/
 .menu {
   grid-row: 2 / 3;
   grid-column: 2 / 5;
@@ -163,18 +162,26 @@ All the menu content was originally nested inside of a menu div.
       transform: translateX(-99%);
       color: #2314C9;
       border-color: #1489FF; }
+      .menu:hover .menu__btn--left:hover, .menu__btn:hover .menu__btn--left:hover {
+        transform: translateX(-99%) translateY(-10%) scale(1.05); }
     .menu:hover .menu__btn--right, .menu__btn:hover .menu__btn--right {
       transform: translateX(109%);
       color: #2314C9;
       border-color: #1489FF; }
+      .menu:hover .menu__btn--right:hover, .menu__btn:hover .menu__btn--right:hover {
+        transform: scale(1.05) translateY(-10%) translateX(107%); }
     .menu:hover .menu__btn--top, .menu__btn:hover .menu__btn--top {
-      transform: translateY(-99%);
+      transform: scale(1.05) translateY(-98%);
       color: #2314C9;
       border-color: #1489FF; }
+      .menu:hover .menu__btn--top:hover, .menu__btn:hover .menu__btn--top:hover {
+        transform: scale(1.1) translateY(-95%); }
   .menu:hover .menu__nav, .menu__btn:hover .menu__nav {
-    transform: translateY(99%);
+    transform: translateY(99%) scale(1.15);
     color: #2314C9;
     border-color: #1489FF; }
+    .menu:hover .menu__nav:hover, .menu__btn:hover .menu__nav:hover {
+      transform: translateY(113%) scale(1.3); }
   .menu:hover .menu__link--media-icon, .menu__btn:hover .menu__link--media-icon {
     color: #777; }
 

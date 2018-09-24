@@ -11,3 +11,7 @@ body {
   padding: 3rem;
   background-color: $color-white;
 }
+
+.noFlicker {
+  -webkit-backface-visibility: hidden;
+}
