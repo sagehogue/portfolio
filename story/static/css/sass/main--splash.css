@@ -115,8 +115,8 @@ All the menu content was originally nested inside of a menu div.
   margin: 0 auto;
   transform: translateY(40vh);
   border-radius: 3px;
-  border: 0.5rem solid #7ed56f;
-  color: #28b485; }
+  border: 0.5rem solid #1489FF;
+  color: #0B212F; }
   .menu__btn {
     font-size: 1.5rem;
     display: inline-block;
@@ -161,20 +161,20 @@ All the menu content was originally nested inside of a menu div.
     z-index: -1; }
     .menu:hover .menu__btn--left, .menu__btn:hover .menu__btn--left {
       transform: translateX(-99%);
-      color: #28b485;
-      border-color: #7ed56f; }
+      color: #2314C9;
+      border-color: #1489FF; }
     .menu:hover .menu__btn--right, .menu__btn:hover .menu__btn--right {
       transform: translateX(109%);
-      color: #28b485;
-      border-color: #7ed56f; }
+      color: #2314C9;
+      border-color: #1489FF; }
     .menu:hover .menu__btn--top, .menu__btn:hover .menu__btn--top {
       transform: translateY(-99%);
-      color: #28b485;
-      border-color: #7ed56f; }
+      color: #2314C9;
+      border-color: #1489FF; }
   .menu:hover .menu__nav, .menu__btn:hover .menu__nav {
     transform: translateY(99%);
-    color: #28b485;
-    border-color: #7ed56f; }
+    color: #2314C9;
+    border-color: #1489FF; }
   .menu:hover .menu__link--media-icon, .menu__btn:hover .menu__link--media-icon {
     color: #777; }
 
@@ -197,7 +197,7 @@ All the menu content was originally nested inside of a menu div.
 .header {
   height: 85vh;
   background-color: mintcream;
-  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.65), rgba(40, 180, 133, 0.65)), url("../../img/img1.jpg");
+  background-image: linear-gradient(to right bottom, rgba(20, 137, 255, 0.65), rgba(35, 20, 201, 0.65)), url("../../img/img1.jpg");
   background-size: cover;
   background-position: bottom; }
 

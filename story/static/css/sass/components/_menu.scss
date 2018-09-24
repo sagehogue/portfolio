@@ -20,7 +20,8 @@ All the menu content was originally nested inside of a menu div.
     transform: translateY(40vh);
     border-radius: 3px;
     border: .5rem solid $color-primary-light;
-    color: $color-primary-dark;
+    // color: $color-primary-dark;
+    color: $color-menu-font;
     &__btn {
         font-size: $btn-font-size;
         display: inline-block;
