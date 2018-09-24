@@ -10,7 +10,9 @@ body {
   background-color: #fff; }
 
 .heading__box {
-  padding-top: 20vh; }
+  padding-top: 20vh;
+  grid-column: 2 / 5;
+  grid-row: 1 / 2; }
 
 .heading-main {
   color: #eeeeee;
@@ -45,6 +47,21 @@ body {
 .text__outline {
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
 
+@media screen and (max-width: 650px) {
+  .heading-main--sub {
+    font-size: 2.5rem; }
+  .heading-main--main {
+    font-size: 4.5rem; } }
+@media screen and (max-width: 500px) {
+  .heading__box {
+    padding-top: 15vh;
+    grid-column: 1 / -1;
+    grid-row: 1 / 2; }
+
+  .heading-main--sub {
+    font-size: 2.5rem; }
+  .heading-main--main {
+    font-size: 4rem; } }
 @keyframes moveInLeft {
   0% {
     opacity: 0;
@@ -80,8 +97,11 @@ body {
     transform: translateY(0); } }
 /* 
 Rewrite this menu using absolute positioning so that you can utilize z-index for a prettier animation.
+All the menu content was originally nested inside of a menu div.
 */
 .menu {
+  grid-row: 2 / 3;
+  grid-column: 2 / 5;
   font-size: 2rem;
   font-weight: 900;
   position: relative;
@@ -92,7 +112,7 @@ Rewrite this menu using absolute positioning so that you can utilize z-index for
   width: 30rem;
   height: 5rem;
   z-index: 10;
-  margin: auto;
+  margin: 0 auto;
   transform: translateY(40vh);
   border-radius: 3px;
   border: 0.5rem solid #7ed56f;
@@ -144,7 +164,7 @@ Rewrite this menu using absolute positioning so that you can utilize z-index for
       color: #28b485;
       border-color: #7ed56f; }
     .menu:hover .menu__btn--right, .menu__btn:hover .menu__btn--right {
-      transform: translateX(11rem);
+      transform: translateX(109%);
       color: #28b485;
       border-color: #7ed56f; }
     .menu:hover .menu__btn--top, .menu__btn:hover .menu__btn--top {
@@ -163,6 +183,17 @@ Rewrite this menu using absolute positioning so that you can utilize z-index for
   width: 200%;
   height: 200%; }
 
+@media screen and (max-width: 500px) {
+  .menu {
+    grid-row: 3 / -1;
+    grid-column: 1 / -1;
+    max-width: 75%; }
+    .menu__btn {
+      overflow: hidden; }
+      .menu__btn--left, .menu__btn--right {
+        width: 30%; }
+    .menu:hover .menu__btn--right, .menu__btn:hover .menu__btn--right {
+      transform: translateX(126.5%); } }
 .header {
   height: 85vh;
   background-color: mintcream;
@@ -172,8 +203,8 @@ Rewrite this menu using absolute positioning so that you can utilize z-index for
 
 .header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr; }
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr); }
 
 /* Okay so current goal is to actually make some interesting buttons
 Using different state effects. :after, :activate, :visited etc

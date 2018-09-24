@@ -20,90 +20,88 @@ All the menu content was originally nested inside of a menu div.
     border: .5rem solid $color-primary-light;
     color: $color-primary-dark;
     &__btn {
-      font-size: $btn-font-size;
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      text-decoration: none;
-      color: transparent;
-      background-color: inherit;
-      border-radius: inherit;
-      border: inherit;
-      border-color: transparent;
-      transition: all .3s;
-      z-index: -1;
-      &--left {
-        width: 35%;
-        height: 80%;
-        border-right: none;
-        top: 10%;
-        //left: 3rem;
-      }
-      &--right {
-        width: 35%;
-        height: 80%;
-        border-left: none;
-        top: 10%;
-        left: 61.5%; // 18rem looks good but convert to percent
-      }
-      &--top {
+        font-size: $btn-font-size;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-decoration: none;
+        color: transparent;
+        background-color: inherit;
+        border-radius: inherit;
+        border: inherit;
+        border-color: transparent;
+        transition: all .3s;
+        z-index: -1;
+        &--left {
+            width: 35%;
+            height: 80%;
+            border-right: none;
+            top: 10%; //left: 3rem;
+        }
+        &--right {
+            width: 35%;
+            height: 80%;
+            border-left: none;
+            top: 10%;
+            left: 61.5%; // 18rem looks good but convert to percent
+        }
+        &--top {
+            width: 75%;
+            left: 12.5%;
+            height: 60%;
+            border-bottom: none;
+        }
+    }
+    &__nav {
         width: 75%;
         left: 12.5%;
         height: 60%;
-        border-bottom: none;
-      }
-  
-    }
-    &__nav {
-      width: 75%;
-      left: 12.5%;
-      height: 60%;
-      top: 40%;
-      border-top: none;
-      display: flex;
-      justify-content: space-around;
+        top: 40%;
+        border-top: none;
+        display: flex;
+        justify-content: space-around;
     }
     &__link {
-      display: inline-block;
+        display: inline-block;
     }
     &:hover,
     &__btn:hover {
-      .menu {
-        &__btn {
-          z-index: -1;
-          &--left {
-            transform: translateX(-99%);
-            color: $color-primary-dark;
-            border-color: $color-primary-light;
-          }
-          &--right {
-            transform: translateX(11rem);
-            color: $color-primary-dark;
-            border-color: $color-primary-light;
-          }
-          &--top {
-            transform: translateY(-99%);
-            color: $color-primary-dark;
-            border-color: $color-primary-light;
-          }
+        .menu {
+            &__btn {
+                z-index: -1;
+                &--left {
+                    transform: translateX(-99%);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+                &--right {
+                    transform: translateX(11rem);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+                &--top {
+                    transform: translateY(-99%);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+            }
+            &__nav {
+                transform: translateY(99%);
+                color: $color-primary-dark;
+                border-color: $color-primary-light;
+            }
+            &__link {
+                &--media-icon {
+                    color: $color-grey-dark;
+                }
+            }
         }
-        &__nav {
-          transform: translateY(99%);
-          color: $color-primary-dark;
-          border-color: $color-primary-light;
-        }
-        &__link {
-          &--media-icon {
-            color: $color-grey-dark;
-          }
-        }
-      }
     }
-  }
-  
-  .menu__link--media-icon {
+}
+
+.menu__link--media-icon {
     color: transparent;
     width: 200%;
     height: 200%;
-  }
+}

@@ -1,108 +1,134 @@
 /* 
 Rewrite this menu using absolute positioning so that you can utilize z-index for a prettier animation.
+All the menu content was originally nested inside of a menu div.
 */
 
 .menu {
-  font-size: $menu-font-size;
-  font-weight: 900;
-  position: relative;
-  display: block;
-  text-align: center;
-  padding: $menu-padding;
-  background-color: $color-grey-light-1;
-  width: $menu-width;
-  height: $menu-height;
-  z-index: 10;
-  margin: auto;
-  transform: translateY(40vh);
-  border-radius: 3px;
-  border: .5rem solid $color-primary-light;
-  color: $color-primary-dark;
-  &__btn {
-    font-size: $btn-font-size;
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    text-decoration: none;
-    color: transparent;
-    background-color: inherit;
-    border-radius: inherit;
-    border: inherit;
-    border-color: transparent;
-    transition: all .3s;
-    z-index: -1;
-    &--left {
-      width: 35%;
-      height: 80%;
-      border-right: none;
-      top: 10%;
-      //left: 3rem;
-    }
-    &--right {
-      width: 35%;
-      height: 80%;
-      border-left: none;
-      top: 10%;
-      left: 61.5%; // 18rem looks good but convert to percent
-    }
-    &--top {
-      width: 75%;
-      left: 12.5%;
-      height: 60%;
-      border-bottom: none;
-    }
-
-  }
-  &__nav {
-    width: 75%;
-    left: 12.5%;
-    height: 60%;
-    top: 40%;
-    border-top: none;
-    display: flex;
-    justify-content: space-around;
-  }
-  &__link {
-    display: inline-block;
-  }
-  &:hover,
-  &__btn:hover {
-    .menu {
-      &__btn {
+    grid-row: 2 / 3;
+    grid-column: 2 / 5;
+    font-size: $menu-font-size;
+    font-weight: 900;
+    position: relative;
+    display: block;
+    text-align: center;
+    padding: $menu-padding;
+    background-color: $color-grey-light-1;
+    width: $menu-width;
+    height: $menu-height;
+    z-index: 10;
+    margin: 0 auto;
+    transform: translateY(40vh);
+    border-radius: 3px;
+    border: .5rem solid $color-primary-light;
+    color: $color-primary-dark;
+    &__btn {
+        font-size: $btn-font-size;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-decoration: none;
+        color: transparent;
+        background-color: inherit;
+        border-radius: inherit;
+        border: inherit;
+        border-color: transparent;
+        transition: all .3s;
         z-index: -1;
         &--left {
-          transform: translateX(-99%);
-          color: $color-primary-dark;
-          border-color: $color-primary-light;
+            width: 35%;
+            height: 80%;
+            border-right: none;
+            top: 10%; //left: 3rem;
         }
         &--right {
-          transform: translateX(11rem);
-          color: $color-primary-dark;
-          border-color: $color-primary-light;
+            width: 35%;
+            height: 80%;
+            border-left: none;
+            top: 10%;
+            left: 61.5%; 
         }
         &--top {
-          transform: translateY(-99%);
-          color: $color-primary-dark;
-          border-color: $color-primary-light;
+            width: 75%;
+            left: 12.5%;
+            height: 60%;
+            border-bottom: none;
         }
+    }
+    &__nav {
+        width: 75%;
+        left: 12.5%;
+        height: 60%;
+        top: 40%;
+        border-top: none;
+        display: flex;
+        justify-content: space-around;
+    }
+    &__link {
+        display: inline-block;
+    }
+    &:hover,
+    &__btn:hover {
+        .menu {
+            &__btn {
+                z-index: -1;
+                &--left {
+                    transform: translateX(-99%);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+                &--right {
+                    transform: translateX(109%);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+                &--top {
+                    transform: translateY(-99%);
+                    color: $color-primary-dark;
+                    border-color: $color-primary-light;
+                }
+            }
+            &__nav {
+                transform: translateY(99%);
+                color: $color-primary-dark;
+                border-color: $color-primary-light;
+            }
+            &__link {
+                &--media-icon {
+                    color: $color-grey-dark;
+                }
+            }
+        }
+    }
+}
+
+.menu__link--media-icon {
+    color: transparent;
+    width: 200%;
+    height: 200%;
+}
+
+@media screen and (max-width: 500px) {
+  .menu {
+    grid-row: 3 / -1;
+    grid-column: 1 / -1;
+    max-width: 75%;
+    &__btn {
+      overflow: hidden;
+      &--left, &--right {
+        width: 30%;
       }
-      &__nav {
-        transform: translateY(99%);
-        color: $color-primary-dark;
-        border-color: $color-primary-light;
-      }
-      &__link {
-        &--media-icon {
-          color: $color-grey-dark;
+    }
+    &:hover, &__btn:hover {
+      .menu__btn {
+        &--right {
+          transform: translateX(126.5%);
         }
       }
     }
   }
 }
 
-.menu__link--media-icon {
-  color: transparent;
-  width: 200%;
-  height: 200%;
+@media screen and (max-width: 455px) {
+  
 }
