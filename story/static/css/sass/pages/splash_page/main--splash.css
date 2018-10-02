@@ -46,6 +46,11 @@ body {
     animation-delay: .9s;
     animation-fill-mode: backwards;
     font-weight: 700; }
+  .heading-main--big-word-1 {
+    color: #F26430;
+    color: #FF750C; }
+  .heading-main--big-word-2 {
+    color: #B5FFE9; }
 
 .text__outline {
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
@@ -169,13 +174,13 @@ body {
       color: #2314C9;
       border-color: #1489FF; }
       .menu:hover .menu__btn--right:hover, .menu__btn:hover .menu__btn--right:hover {
-        transform: scale(1.05) translateY(-10%) translateX(107%); }
+        transform: scale(1.05) translateY(-10%) translateX(106.5%); }
     .menu:hover .menu__btn--top, .menu__btn:hover .menu__btn--top {
-      transform: scale(1.05) translateY(-98%);
+      transform: scale(1.05) translateY(-95%);
       color: #2314C9;
       border-color: #1489FF; }
       .menu:hover .menu__btn--top:hover, .menu__btn:hover .menu__btn--top:hover {
-        transform: scale(1.1) translateY(-95%); }
+        transform: scale(1.1) translateY(-94%); }
   .menu:hover .menu__nav, .menu__btn:hover .menu__nav {
     transform: translateY(99%) scale(1.15);
     color: #2314C9;
@@ -204,7 +209,7 @@ body {
 .header {
   height: 85vh;
   background-color: mintcream;
-  background-image: linear-gradient(to right bottom, rgba(20, 137, 255, 0.65), rgba(35, 20, 201, 0.65)), url("../../img/img1.jpg");
+  background-image: linear-gradient(to right bottom, rgba(20, 137, 255, 0.35), rgba(35, 20, 201, 0.6)), url("../../../../img/img1.jpg");
   background-size: cover;
   background-position: bottom; }
 

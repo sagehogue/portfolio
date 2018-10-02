@@ -6,6 +6,7 @@
 
 .heading-main {
     color: $color-typo-1;
+    // color: $color-primary;
     text-transform: uppercase;
     backface-visibility: hidden;
     text-align: center;
@@ -34,6 +35,16 @@
         animation-delay: .9s;
         animation-fill-mode: backwards;
         font-weight: 700;
+        
+    }
+    &--big-word {
+        &-1 {
+            color: $color-primary-light-2;
+            color: #FF750C;
+        }
+        &-2 {
+            color: #B5FFE9;
+        }
     }
 }
 

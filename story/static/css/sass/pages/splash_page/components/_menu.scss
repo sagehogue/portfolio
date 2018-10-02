@@ -81,15 +81,16 @@
                     color: $color-primary-dark;
                     border-color: $color-primary-light;
                     &:hover {
-                        transform: scale(1.05) translateY(-10%) translateX(107%);
+                    
+                        transform: scale(1.05) translateY(-10%) translateX(106.5%);
                     }
                 }
                 &--top {
-                    transform: scale(1.05) translateY(-98%);
+                    transform: scale(1.05) translateY(-95%);
                     color: $color-primary-dark;
                     border-color: $color-primary-light;
                     &:hover {
-                      transform: scale(1.10) translateY(-95%);
+                      transform: scale(1.10) translateY(-94%);
                     }
                 }
             }

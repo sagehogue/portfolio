@@ -1,0 +1,9 @@
+.header {
+    height: 85vh; // thinking this will inherit - colored for testing
+    //background-color: $color-theme-light;
+    //position: relative;
+    background-color: mintcream;
+    background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.35), rgba($color-primary-dark, 0.6)), url("../../../../img/img1.jpg");
+    background-size: cover;
+    background-position: bottom;
+}
