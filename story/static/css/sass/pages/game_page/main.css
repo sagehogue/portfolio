@@ -20,18 +20,26 @@ html {
 
 body {
   height: 100vh;
-  background: rgba(141, 141, 146, 0.9);
-  font-family: 'Lobster', cursive;
+  background: linear-gradient(to right bottom, #009ddc, rgba(35, 20, 201, 0.5)), linear-gradient(to left bottom, #1489ff, rgba(35, 20, 201, 0.5));
   display: grid;
   grid-template-columns: 1fr 9fr 1fr;
   grid-template-rows: 1fr 5fr 1fr; }
 
-#storyWelcome {
-  margin: auto 0; }
+#textBox {
+  font-family: Verdana, Geneva, sans-serif; }
+  #textBox:nth-child(1) {
+    margin-left: .5rem; }
+
+#storyWelcome, #storyWelcome > .word {
+  margin: auto 0;
+  font-family: Papyrus, fantasy;
+  font-weight: 900;
+  font-size: 4rem;
+  font-weight: 700; }
 
 .word {
   display: inline;
-  font-family: 'lato';
+  font-weight: 500;
   opacity: 0;
   font-size: 1.5rem;
   color: #0c080f; }
@@ -39,7 +47,6 @@ body {
 #storyWrapper {
   grid-column: 2 / 3;
   grid-row: 2 / 3;
-  color: lightseagreen;
   display: grid;
   grid-template-columns: 1fr 8fr 1fr;
   grid-template-rows: 3fr 3fr 5fr 2fr;
@@ -47,15 +54,17 @@ body {
   /*box-shadow: 5px 10px */ }
 
 .textWrapper {
+  background: rgba(247, 247, 247, 0.9);
+  padding: 2.5rem 2rem;
   grid-column: 1 / -1;
   grid-row: 1 / 2;
-  background-color: #D7D6D6;
   border-radius: 5px;
   width: 75%;
   margin: 0 auto;
   box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.3); }
 
 #textBox {
+  line-height: 1.3;
   grid-column: 1 / -1;
   grid-row: 1 / 3;
   box-sizing: content-box;

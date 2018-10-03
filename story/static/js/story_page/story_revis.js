@@ -57,6 +57,7 @@ async function initialize() {
     // Later I should rewrite this so that it completely resets the state of the page. That'd allow for an again button
     // to be smoothly executed and require no page reload.
     // let buttonState = document.querySelector('.storySelector');
+    $('#storyButtonBox').empty();
     const duration = 850;
     const apiCall = await callAPI.bind(this, 'No Selection', true);
     const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);

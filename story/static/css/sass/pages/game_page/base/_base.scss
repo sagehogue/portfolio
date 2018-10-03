@@ -9,8 +9,9 @@ html {
 
   body {
     height: 100vh;
-    background: rgba($color-grey-silver, .9);
-    font-family: 'Lobster', cursive;
+    // background: rgba($color-grey-light-1, .9);
+    background: linear-gradient(to right bottom, rgba($color-primary, 1), rgba($color-primary-dark, .5)),
+    linear-gradient(to left bottom, rgba($color-primary-light, 1), rgba($color-primary-dark, .5));
     display: grid;
     grid-template-columns: 1fr 9fr 1fr;
     grid-template-rows: 1fr 5fr 1fr;

@@ -2,14 +2,26 @@
 //     background-color: inherit;
 //     border-color: lightslategray;
 // }
+#textBox {
+    
+    font-family: Verdana, Geneva, sans-serif;
+    &:nth-child(1) {
+        margin-left: .5rem;
+    }
+}
 
-#storyWelcome {
+#storyWelcome, #storyWelcome > .word {
     margin: auto 0;
+    font-family: Papyrus, fantasy;
+    font-weight: 900;
+    font-size: 4rem;
+    font-weight: 700;
 }
 
 .word {
     display: inline;
-    font-family: 'lato';
+    // font-family: 'lato';
+    font-weight: 500;
     opacity: 0;
     font-size: 1.5rem;
     color: $color-type-main;
