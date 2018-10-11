@@ -26,3 +26,9 @@
     font-size: 1.5rem;
     color: $color-type-main;
 }
+
+@media screen and (max-width: 455) {
+    #storyWelcome {
+        font-size: 2.5rem;
+    }
+}
