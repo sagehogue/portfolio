@@ -1,49 +1,21 @@
 // TODOS
-// #1: Write function to bring initial state back so it can loop!
-// #1.5: Write function to dynamically generate option HTML elements (like I did with the storyselectors)
-// this will allow the css to properly space them! hurray!
-// #2: Write logic to prevent multiple event listeners from firing. perhaps check for .disabled state?
-// #4: Error handling should probably be implemented.
-// #5: Gotta document my code!
+// #1: Fix the lack of animation after loop button is clicked. It instantly reverts to initial screen without ever animating button or text out, and without animating new text or button back in. Very jarring.
+// #2: Error handling should probably be implemented.
+// #3: Gotta document my code!
 
 
 // COMPLETE MAIN FUNCTIONS
-// #1: async function fadeTextIn
-// #2: async function fadeTextOut
 // #3: async function callAPI <---------- NEEDS ERROR HANDLING
 // #4: function updateOptionButtontext <---------- error handling needed
 
-// COMPLETE SPECIFIC FUNCTIONS
-// #1: function animValueCalc
-// #2: function fixAlign
-// #3: function switchToOptionBox
-// #4: function spanify
-// #5: async function buttonSwitchAll
-
-
-// COMPLETE
-// #1: WRITE THAT DAMN RENDERSTORYBUTTON function :OOOO thx bro
-// #2: Create a function to dynamically generate new HTML for the story selector buttons and remove the hardcoding.
-// #3: Write text content updating function & integrate
 // NOTES
-// Current fucking mystery: The generated buttons don't seem able to be selected by dom selectors.
-// Fetch API not useful in this case - I have jQuery tangled in here already, so may as well use $.ajax
-// Fetch API requires cors && I haven't bothered with that yet so it isn't properly functioning
-// #1: Fix fadeTextIn
-// #2: fix spanify(false) it doesnt correctly sequence promises
-// #2: Reorder code to run with new functions
-// #4: Problematic localstorage issues. now im having problems with setting items properly and accessing them.
-// one step forward... two steps back.
-// #5: WOW very much to prove my point, I think I should scrap the whole localStorage thing and just an object data model.
-// #6: But.. idk figure this out before brainlessly attacking it more. I've wasted so much time, I need to work smarter
-// not harder..
-//#7: Create some real control over when the button is clickable. Might have to use the opacity to measure.
 
 // REVELATION: I seem to be operating from some false assumptions here. All these async techniques
 // don't provide flow automatically - if they have nothing to wait on, no server call or whatever,
 // they won't delay it. I think I need setTimeout functions and ways to calculate animation duration
 // (previously assumed it could be implicitly tracked but I don't think in my case that is so)
 // and stoof to sequence. async / await seems amazeballs as well.
+
 (function () {
     domStrings = {
 
@@ -58,7 +30,7 @@ async function initialize() {
     // to be smoothly executed and require no page reload.
     // let buttonState = document.querySelector('.storySelector');
     $('#storyButtonBox').empty();
-    const duration = 850;
+    const duration = 500;
     const apiCall = await callAPI.bind(this, 'No Selection', true);
     const buttonSwitchAll = asyncButtonSwitchAll.bind(this, '.storySelector', duration);
     spanify(true);
@@ -192,19 +164,22 @@ async function callAPI(userSelection, requestAllStories = false, requestSelected
 
 function animValueCalc(spanClass) {
     const words = $($(spanClass).get().reverse());
-    speed = 400;
-    animDuration = 400;
+    speed = 500; // lower is faster
+    animDuration = 400; // again, lower is faster
     if (words.length >= 5 && words.length < 25) {
-        speed -= 300;
+        speed -= 350;
         animDuration -= 150
     }
     else if (words.length >= 25 && words.length < 50) {
-        speed -= 350;
+        speed -= 400;
+        animDuration -= 250
+    } else if (words.length >= 50 && words.length < 75){
+        speed -= 425;
         animDuration -= 250
     }
-    else if (words.length >= 50) {
-        speed -= 400;
-        animDuration -= 350
+    else if (words.length >= 75) {
+        speed -= 475;
+        animDuration -= 250
     }
     const totalDuration = (words.length * speed) + animDuration;
     return [speed, animDuration, totalDuration]
@@ -452,7 +427,7 @@ $('#selectionBox').click(e => {
                 })
             }
             const updateButtons = function () {
-                asyncButtonSwitchAll('.optionSelector', 1000, true)
+                asyncButtonSwitchAll('.optionSelector', 500, true)
             }
             const selectedStory = e.target.id;
             const storyAPICall = callAPI.bind(this, selectedStory, false, true);
@@ -496,10 +471,15 @@ $('#selectionBox').click(e => {
             // CODE RESET
             let resetState = function () {
                 return new Promise(function (res, rej) {
-                    $('#textBox').text('Select your experience');
+                    $('#textBox').empty();
+                    const welcomeElement = document.createElement('p')
+                    welcomeElement.setAttribute('id', 'storyWelcome');
+                    welcomeElement.innerText = 'Select your experience';
+                    document.querySelector('#textBox').appendChild(welcomeElement);
+                    // $('#textBox').text('Select your experience');
                     alignFix(true);
                     switchToOptionBox(true);
-                    const fadeOutDuration = 1500
+                    const fadeOutDuration = 750
                     buttonSwitch(document.querySelector('.loopBtn'), fadeOutDuration)
                     setTimeout(res, fadeOutDuration)
                 })
