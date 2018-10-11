@@ -123,12 +123,17 @@ body {
     box-shadow: 4px 1rem 1rem 4px rgba(0, 0, 0, 0.15); }
     .button:hover .button--wrapper, .button--wrapper:hover .button--wrapper {
       transform: scale(1.15) translateY(-1.5rem); }
+    .button:hover .button:not(.button:hover), .button--wrapper:hover .button:not(.button:hover) {
+      transform: scale(0.95) translateY(0.25rem);
+      background-color: rgba(245, 255, 250, 0.5);
+      box-shadow: inset 1px 2px 1px 1px rgba(0, 0, 0, 0.15); }
   .button:active {
     box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.5); }
-  .button:not(:hover) {
-    transform: scale(0.95) translateY(0.25rem);
-    background-color: rgba(245, 255, 250, 0.5);
-    box-shadow: inset 1px 2px 1px 1px rgba(0, 0, 0, 0.15); }
+
+#storyButtonBox:hover .button:not(:hover) {
+  transform: scale(0.95) translateY(0.25rem);
+  background-color: rgba(245, 255, 250, 0.5);
+  box-shadow: inset 1px 2px 1px 1px rgba(0, 0, 0, 0.15); }
 
 .buttonOpaque {
   opacity: 1; }

@@ -23,17 +23,23 @@
             box-shadow: 4px 1rem 1rem 4px rgba($color-black, .15); // animation: drift alternate 1s infinite
             &--wrapper {
                 transform: scale(1.15) translateY(-1.5rem);
+            } // this seems not to be working!
+            &:not(.button:hover) {
+                transform: scale(.95) translateY(.25rem);
+                background-color: rgba($btn-bg-color-1, .5);
+                box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15);
             }
         }
     }
     &:active {
         box-shadow: 1px 3px 3px 1px rgba($color-black, .5);
     }
-    &:not(:hover) {
-        transform: scale(.95) translateY(.25rem);
-        background-color: rgba($btn-bg-color-1, .5);
-        box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15);
-    }
+}
+
+#storyButtonBox:hover .button:not(:hover) {
+    transform: scale(.95) translateY(.25rem);
+    background-color: rgba($btn-bg-color-1, .5);
+    box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15);
 }
 
 .buttonOpaque {
