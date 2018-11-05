@@ -29,10 +29,11 @@
                 background-color: rgba($btn-bg-color-1, .5);
                 box-shadow: inset 1px 2px 1px 1px rgba($color-black, .15);
             }
+            &:active {
+                transform: translateY(3px);
+                box-shadow: 1px 3px 3px 1px rgba($color-black, .5);
+            }
         }
-    }
-    &:active {
-        box-shadow: 1px 3px 3px 1px rgba($color-black, .5);
     }
 }
 

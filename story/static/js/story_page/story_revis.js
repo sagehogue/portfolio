@@ -245,7 +245,7 @@ function spanify(firstCall = false) {
     }
 }
 
-async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 1000) {
+async function asyncButtonSwitchAll(buttonType = '.optionSelector', duration = 500) {
     const loopBtn = document.querySelector('.loopBtn')
     document.querySelectorAll(buttonType).forEach(function (current) {
         if (current.innerText) {
@@ -426,15 +426,16 @@ $('#selectionBox').click(e => {
                     setTimeout(res, stateFixDuration)
                 })
             }
+            const buttonDuration = 500;
             const updateButtons = function () {
-                asyncButtonSwitchAll('.optionSelector', 500, true)
+                asyncButtonSwitchAll('.optionSelector', buttonDuration, true)
             }
             const selectedStory = e.target.id;
             const storyAPICall = callAPI.bind(this, selectedStory, false, true);
             // const buttonAnimDuration = 1500;
             // const spanifyCallBack = spanify.bind(this, true)
             // const optionSwitchCallback = asyncButtonSwitchAll.bind(this, '.optionSelector', buttonAnimDuration);
-            asyncButtonSwitchAll('.storySelector').then(fadeTextOut).then(storyAPICall).then(transitionToOptionBox
+            asyncButtonSwitchAll('.storySelector', buttonDuration).then(fadeTextOut).then(storyAPICall).then(transitionToOptionBox
                 // const currentContext = res[0].context;
                 // // localStorage.setItem("context", JSON.stringify(currentContext))
                 // localStorage.setItem("optionQuantity", currentContext["optionQuantity"])

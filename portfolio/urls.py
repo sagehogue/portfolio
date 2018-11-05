@@ -1,6 +1,3 @@
-from django.conf.urls import include, url
-from django.contrib import admin
-
 """portfolio URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,11 +14,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.conf.urls import include, url
 from django.urls import path
+
+from rest_framework import routers, serializers, viewsets, views
+
+from . import serializers, views
+
+# Django REST Framework
+
+# Routers provide an easy way of automatically determining the URL conf.
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('blog/', include('blog.urls'), name='blog'),
+    # Wire up our API using automatic URL routing.
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/', include(router.urls)),
     url('', include('story.urls')),
-    # url('', include())
 ]
