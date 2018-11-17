@@ -32,13 +32,13 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 # Gotta use these viewsets I think, that's why the code below didn't work
-# router.register('snippets', snipviews.snippet_list)
-# router.register(r'snippets/<int:pk>/', snipviews.snippet_detail)
+router.register('snippets', snipviews.SnippetList)
+router.register(r'snippets/<int:pk>/', snipviews.SnippetDetail)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('blog/', include('blog.urls'), name='blog'),
-    # Wire up our API using automatic URL routing.g
+    # Wire up our API using automatic URL routing.
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path(r'api/snippets/', include('snippets.urls')),
     url(r'^api/', include(router.urls)),
